@@ -1,13 +1,13 @@
 import {emailRegex, userNameRegex, passwordRegex} from '~/utils/validation/regExp.js';
 import {isNotEmptyString} from "~/utils/validation/validators.js";
 
-const validationRulesRegister = {
+const registerValidationRules = {
     email: emailRegex,
     userName: userNameRegex,
     password: passwordRegex
 }
 
-const errorsRegister = {
+const errorsMessageRegister = {
     email: {
         EMAIL_IS_INCORRECT_FORMAT: 'The mailing address must contain from 3 to 10 characters of the Latin alphabet in the format example@example.com',
     },
@@ -20,7 +20,7 @@ const errorsRegister = {
 }
 
 
-export const errorTextFromServer = {
+export const errorMessageFromServer = {
     user_already_exists: 'A user with the same email address already exists',
     user_email_already_exists: 'A user with the same email address already exists',
     general_query_limit_exceeded: 'Too many registration attempts. Please try again after some time.',
@@ -36,18 +36,18 @@ export const errorTextFromServer = {
     default_error: 'Something went wrong. Please try again after some time.',
 }
 
-export const validationRulesAndErrorTextRegisterForm = {
+export const validationRulesAndErrorMessageRegisterForm = {
     email: {
-        regex: validationRulesRegister.email,
-        errText: errorsRegister.email.EMAIL_IS_INCORRECT_FORMAT
+        regex: registerValidationRules.email,
+        errText: errorsMessageRegister.email.EMAIL_IS_INCORRECT_FORMAT
     },
     userName: {
-        regex: validationRulesRegister.userName,
-        errText: errorsRegister.userName.USERNAME_IS_INCORRECT_FORMAT
+        regex: registerValidationRules.userName,
+        errText: errorsMessageRegister.userName.USERNAME_IS_INCORRECT_FORMAT
     },
     password: {
-        regex: validationRulesRegister.password,
-        errText: errorsRegister.password.PASSWORD_IS_INCORRECT_FORMAT
+        regex: registerValidationRules.password,
+        errText: errorsMessageRegister.password.PASSWORD_IS_INCORRECT_FORMAT
     }
 }
 
@@ -56,7 +56,7 @@ export function checkErrorTypeServerError(errorType) {
         return;
     }
 
-    return Object.keys(errorTextFromServer).find((el) => {
+    return Object.keys(errorMessageFromServer).find((el) => {
         return errorType === el;
     })
 }

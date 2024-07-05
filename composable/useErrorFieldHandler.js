@@ -1,68 +1,70 @@
 import { isNotEmptyObject} from "~/utils/validation/validators.js";
 
-export default function useErrorFieldHandler(registerFromInputs, validationRulesAndErrorText) {
+export default function useErrorFieldHandler(formInputs, validationRulesAndErrorMessage) {
 
     const errors = ref({});
 
     const initErrors = () => {
-        for (const registerFromInputsKey in registerFromInputs) {
-            errors.value[registerFromInputsKey] = {
-                isError: false,
-                text: '',
-            }
-        }
-    }
+        Object.keys(formInputs).forEach((key) => {
+            initErrorEmpty(key);
+        });
+    };
 
     const checkFieldsErrors = () => {
-
-        if(!isNotEmptyObject(registerFromInputs.value) && !isNotEmptyObject(validationRulesAndErrorText)) {
+        console.log('checkFieldsErrors')
+        if(!isNotEmptyObject(formInputs) || !isNotEmptyObject(validationRulesAndErrorMessage)) {
             return;
         }
 
-        for (const formItemsKey in registerFromInputs) {
-            if(!validationRulesAndErrorText[formItemsKey].regex.test(registerFromInputs[formItemsKey].value)) {
-                errors.value[formItemsKey] = {
-                    isError: true,
-                    text: validationRulesAndErrorText[formItemsKey].errText
-                };
-            }
+        Object.keys(formInputs).forEach((key) => {
+            errors.value[key] = validateField(key, formInputs[key].value);
+        });
+    };
+
+    const validateField = (fieldKey, fieldValue) => {
+        const validationRule = validationRulesAndErrorMessage[fieldKey];
+        if(!validationRule.regex.test(fieldValue)) {
+            return {text: validationRule.errText, isError: true};
         }
-    }
+
+        return {text: '', isError: false};
+    };
 
     const isFieldsEmpty = computed(() => {
-        return Object.values(registerFromInputs).some((item) => !item.value.length);
-    })
+        return Object.values(formInputs).some((item) =>  !item.value.length);
+    });
+
 
     const isHaveError = computed(() => {
-        return Object.values(errors.value).some((error) => error.isError);
-    })
+        return Object.values(errors.value).some((error) =>  error.isError);
+    });
 
     const setWatchers = () => {
-        for (const valueKey in registerFromInputs) {
-            watch(registerFromInputs[valueKey], () => {
-                if(errors.value[valueKey]?.isError) {
-                    resetError(valueKey);
+        Object.keys(formInputs).forEach((key) => {
+            watch(formInputs[key], () => {
+                if(errors.value[key]?.isError) {
+                    initErrorEmpty(key);
                 }
-            })
-        }
-    }
+            });
+        });
+    };
 
     const resetAllErrors = () => {
-        for (const errorsKey in errors.value) {
-            resetError(errorsKey)
-        }
-    }
+        Object.keys(errors.value).forEach((key) => {
+            initErrorEmpty(key);
+        });
+    };
 
-    const resetError = (key) => {
+    const initErrorEmpty = (key) => {
         errors.value[key] = {
             isError: false,
             text: '',
         };
-    }
+    };
 
     initErrors();
     setWatchers();
 
-    return { errors, checkFieldsErrors, isHaveError, isFieldsEmpty, resetError, resetAllErrors };
+    return { errors, checkFieldsErrors, isHaveError, isFieldsEmpty };
 
 }

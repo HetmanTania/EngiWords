@@ -1,42 +1,37 @@
-import {isNotEmptyObject} from "~/utils/validation/validators.js";
+import {isNotEmptyObject, isNotEmptyString} from "~/utils/validation/validators.js";
 
-export default function useErrorServerHandler(errorTextFromServer, registerFromInputs) {
+export default function useErrorServerHandler(serverErrorMessages, registerFromInputs) {
 
     const error = ref({
         isError: false,
         text: '',
     });
 
-    const checkServerErrors = (e) => {
-        if(!isNotEmptyObject(errorTextFromServer)) {
+    const checkServerErrors = (errorType) => {
+        if(!isNotEmptyObject(serverErrorMessages) || !isNotEmptyString(errorType)) {
             return;
         }
 
-        const errorType = e.type;
+        error.value = validateServerError(errorType)
+    }
 
-        if(errorTextFromServer[errorType]) {
-            error.value = {
-                isError: true,
-                text: errorTextFromServer[errorType]
-            }
-        }
-        else {
-            error.value = {
-                isError: true,
-                text: errorTextFromServer['default_error']
-            }
-        }
+    const validateServerError = (errorType) => {
+        const errorMessage = getErrorMessage(errorType);
+        return { isError: true,  text: errorMessage };
+    }
 
+    const getErrorMessage = (errorType) => {
+        return serverErrorMessages[errorType] || serverErrorMessages['default_error'];
     }
 
     const setWatchers = () => {
-        for (const valueKey in registerFromInputs) {
-            watch(registerFromInputs[valueKey], () => {
+        Object.keys(registerFromInputs).forEach((key) => {
+            watch(registerFromInputs[key], () => {
                 if(error.value.isError) {
                     resetError();
                 }
             })
-        }
+        })
     }
 
     const isHaveError =  computed(()=> {
