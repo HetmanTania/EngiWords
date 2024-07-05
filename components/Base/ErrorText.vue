@@ -6,7 +6,7 @@
 
 import {isBoolean, isString} from "~/utils/validation/validators.js";
 
-defineProps({
+const props = defineProps({
   text: {
     type: String,
     default: '',
@@ -17,8 +17,20 @@ defineProps({
     default: false,
     validator: isBoolean
   },
+  customClasses: {
+    type: String,
+    required: false,
+    default: '',
+  }
 })
 
 const errorClass = `text-sm text-error mt-2 relative`;
+
+const btnClasses = computed(() => {
+  return  [
+    btnClasses,
+    props.customClasses
+  ].join(' ');
+})
 
 </script>

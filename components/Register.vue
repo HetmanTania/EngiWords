@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import {validationRulesAndErrorTextRegisterForm, errorTextFromServer} from "~/form/RegisterAndLoginErrors.js";
+import {validationRulesAndErrorMessageRegisterForm, errorMessageFromServer} from "~/form/RegisterAndLoginErrors.js";
 import {useAuthStore} from "~/stores/auth.js";
 
 import useErrorFieldHandler from "~/composable/useErrorFieldHandler.js";
@@ -53,14 +53,17 @@ const registerFromInputs = {
   userName: userName,
   password: password,
 }
-const errorFieldHandler = useErrorFieldHandler(registerFromInputs, validationRulesAndErrorTextRegisterForm);
+const errorFieldHandler = useErrorFieldHandler(registerFromInputs, validationRulesAndErrorMessageRegisterForm);
 const errorsField = ref(errorFieldHandler.errors)
 
-const errorServerHandler = useErrorServerHandler(errorTextFromServer, registerFromInputs);
+const errorServerHandler = useErrorServerHandler(errorMessageFromServer, registerFromInputs);
 const errorServer = ref(errorServerHandler.error);
 
 const isSubmitDisabled = computed(() => {
-  return errorFieldHandler.isFieldsEmpty.value || errorServerHandler.isHaveError.value;
+  return errorFieldHandler.isFieldsEmpty.value
+      || errorFieldHandler.isHaveError.value
+      || errorServerHandler.isHaveError.value;
+
 })
 
 const isLoading = ref(false);
@@ -80,7 +83,7 @@ const handlerRegister = async () => {
       await authStore.register(registerFromInputsValue);
 
     } catch (e) {
-      errorServerHandler.checkServerErrors(e);
+      errorServerHandler.checkServerErrors(e.type);
     }
     finally {
       isLoading.value = false;
