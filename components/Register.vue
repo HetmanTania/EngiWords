@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent class="flex flex-col items-end justify-between" action="">
+    <form @submit.prevent class="from-animation flex flex-col items-end justify-between" action="">
      <div class="flex flex-col items-start justify-between w-full">
        <label :class="labelClass" for="email">Email address</label>
        <input v-model.trim="email" :class="inputClass"
@@ -34,6 +34,7 @@ import useErrorFieldHandler from "~/composable/useErrorFieldHandler.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
 import BtnSubmit from "~/components/Base/BtnSubmit.vue";
 import ErrorText from "~/components/Base/ErrorText.vue";
+import gsap from "~/gsap.js";
 
 const labelClass = `block text-xm font-medium leading-6 mb-3`;
 const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full
@@ -58,6 +59,10 @@ const errorsField = ref(errorFieldHandler.errors)
 
 const errorServerHandler = useErrorServerHandler(errorMessageFromServer, registerFromInputs);
 const errorServer = ref(errorServerHandler.error);
+
+onMounted(() => {
+  startFormInputsAnimation();
+})
 
 const isSubmitDisabled = computed(() => {
   return errorFieldHandler.isFieldsEmpty.value
@@ -91,6 +96,18 @@ const handlerRegister = async () => {
   }
 }
 
-
+const startFormInputsAnimation = () => {
+  const tl = gsap.timeline();
+  tl.to('input', {
+    scale: 1.1,
+    duration: .3,
+    delay: 2,
+    stagger: .1,
+  }).to('input',{
+    scale: 1,
+    delay: .1,
+    stagger: .1,
+  });
+}
 
 </script>
