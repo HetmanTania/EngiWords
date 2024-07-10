@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent class="flex flex-col items-end justify-between" action="">
+    <form @submit.prevent class="from-animation flex flex-col items-end justify-between" action="">
       <div class="flex flex-col items-start justify-between w-full">
         <label :class="labelClass" for="email">Email address</label>
         <input v-model="email" :class="inputClass"
@@ -20,9 +20,12 @@
 
 <script setup>
 import {useAuthStore} from "~/stores/auth.js";
-import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
 import { errorMessageFromServer } from "~/form/RegisterAndLoginErrors.js";
+import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
+import { isNotEmptyString } from '~/utils/validation/validators.js';
+
 import ErrorText from "~/components/Base/ErrorText.vue";
+import gsap from "~/gsap.js";
 
 const labelClass = `block text-xm font-medium leading-6 mb-3`;
 const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full
@@ -46,9 +49,12 @@ const errorServer = ref(errorServerHandler.error);
 const authStore = useAuthStore();
 
 const isSubmitDisabled = computed(() => {
-  return errorServerHandler.isHaveError.value;
+  return errorServerHandler.isHaveError.value || !isNotEmptyString(email.value) || !isNotEmptyString(password.value);
 })
 
+onMounted(() => {
+  startFormInputsAnimation();
+})
 
 const handlerLogin = async () => {
   try {
@@ -66,4 +72,18 @@ const handlerLogin = async () => {
   }
 }
 
+
+const startFormInputsAnimation = () => {
+  const tl = gsap.timeline();
+  tl.to('input', {
+    scale: 1.1,
+    duration: .3,
+    delay: 2,
+    stagger: .1,
+  }).to('input',{
+    scale: 1,
+    delay: .1,
+    stagger: .1,
+  });
+}
 </script>
