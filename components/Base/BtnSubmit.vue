@@ -1,13 +1,15 @@
 <template>
-  <button type="submit" :disabled="isDisabled" @click="clickHandler"
-          :class="btnClasses"
-          :aria-busy="isLoading" :aria-label="text">
+  <button
+      type="submit"
+          :disabled="isDisabled" :class="btnClasses"
+          :aria-busy="isLoading" :aria-label="text"
+          @click="clickHandler">
     <span v-if="!isLoading" class="h-[27px]" >{{text}}</span>
 
     <span v-else class="flex items-center justify-around w-[76.84px] h-[27px]">
-      <i :class='[classesPointer, `animate-scalePoint200ms`]'></i>
-      <i :class='[classesPointer, `animate-scalePoint400ms`]'></i>
-      <i :class='[classesPointer, `animate-scalePoint600ms`]'></i>
+      <i :class='[classesPointer, `animate-scalePoint200ms`]'/>
+      <i :class='[classesPointer, `animate-scalePoint400ms`]'/>
+      <i :class='[classesPointer, `animate-scalePoint600ms`]'/>
     </span>
 
   </button>

@@ -1,27 +1,31 @@
 <template>
   <div>
-    <form @submit.prevent class="from-animation flex flex-col items-end justify-between" action="">
+    <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
      <div class="flex flex-col items-start justify-between w-full">
        <label :class="labelClass" for="email">Email address</label>
-       <input v-model.trim="email" :class="inputClass"
-           type="email" id="email" name="email" placeholder="Enter email" />
-       <ErrorText :isShow="errorsField?.email?.isError" :text="errorsField?.email?.text"/>
+       <input
+            id="email" v-model.trim="email"
+           :class="inputClass" type="email" name="email" placeholder="Enter email" >
+       <ErrorText :is-show="errorsField?.email?.isError" :text="errorsField?.email?.text"/>
      </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
         <label :class="labelClass" for="userName">User name</label>
-        <input v-model.trim="userName" :class="inputClass"
-               type="text" id="userName" name="userName" placeholder="Enter user name" />
-        <ErrorText :isShow="errorsField?.userName?.isError" :text="errorsField?.userName?.text"/>
+        <input
+                id="userName" v-model.trim="userName"
+               :class="inputClass" type="text" name="userName" placeholder="Enter user name" >
+        <ErrorText :is-show="errorsField?.userName?.isError" :text="errorsField?.userName?.text"/>
       </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
         <label :class="labelClass" for="email">Password</label>
-        <input v-model.trim="password" :class="inputClass"
-               type="password" id="password" name="password" placeholder="Enter password" />
-        <ErrorText :isShow="errorsField?.password?.isError" :text="errorsField?.password?.text" />
+        <input
+              id="password" v-model.trim="password"
+               :class="inputClass" type="password" name="password" placeholder="Enter password" >
+        <ErrorText :is-show="errorsField?.password?.isError" :text="errorsField?.password?.text" />
       </div>
-      <ErrorText :isShow="errorServer.isError" :text="errorServer.text"/>
-      <BtnSubmit text="Register" @submit="handlerRegister"
-                 :isLoading="isLoading" :isDisabled="isSubmitDisabled"/>
+      <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
+      <BtnSubmit
+                  text="Register" :is-loading="isLoading"
+                 :is-disabled="isSubmitDisabled" @submit="handlerRegister"/>
     </form>
   </div>
 </template>

@@ -1,16 +1,17 @@
 <template>
-  <div class="grid-cols-1 gap-4 mt-4 grid justify-items-center sm:justify-between
-    xl:grid-cols-[375px_minmax(0,375px)_375px] md:grid-cols-[minmax(0,375px)_375px] sm:grid-cols-[minmax(0,305px)_305px]">
-    <WordListBlock v-for="wordList in wordListsStore.wordLists" :key="wordList.id"
-                   @deleteWordList="setAction(OPERATION_WITH_DATA.remove, wordList)"
-                   @editWordList="setAction(OPERATION_WITH_DATA.edit, wordList)"
-                   :wordList="wordList">
-    </WordListBlock>
+  <div
+      class="grid-cols-1 gap-4 mt-4 grid justify-items-center sm:justify-between
+      xl:grid-cols-[375px_minmax(0,375px)_375px] md:grid-cols-[minmax(0,375px)_375px] sm:grid-cols-[minmax(0,305px)_305px]">
+    <WordListBlock
+                    v-for="wordList in wordListsStore.wordLists" :key="wordList.id"
+                   :word-list="wordList"
+                   @delete-word-list="setAction(OPERATION_WITH_DATA.remove, wordList)"
+                   @edit-word-list="setAction(OPERATION_WITH_DATA.edit, wordList)"/>
   </div>
-  <WordListDialog v-if="isWordListDialogOpen" :wordList="CRUDwordList" :action="CRUDAction"
+  <WordListDialog
+                  v-if="isWordListDialogOpen" :word-list="CRUDwordList" :action="CRUDAction"
                    @create="createNewWordList" @edit="editWordList" @remove="deleteWordList"
-                   @close="closeWordListDialog">
-  </WordListDialog>
+                   @close="closeWordListDialog"/>
 </template>
 
 <script setup>

@@ -1,15 +1,18 @@
 <template>
-  <Dialog :isShowDialog="isShow">
-    <template v-slot:body>
+  <Dialog :is-show-dialog="isShow">
+    <template #body>
       <div class="h-[517px]">
         <h2 class=" font-bold mb-5 text-xm">Upload Image</h2>
-        <input @change="searchByQuery" v-model="query" placeholder="Search..." type="text" class=" mt-5 block border-2 rounded-xl border-primary px-[20px] py-[10px]
+        <input
+        v-model="query" placeholder="Search..." type="text" class=" mt-5 block border-2 rounded-xl border-primary px-[20px] py-[10px]
         w-full bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500
-        focus:ring-0 sm:text-sm sm:leading-6 disabled:border-text-200 disabled:text-text-700"/>
-        <div @click="selectPhoto" class="h-[370px] images-box w-full mt-5 overflow-y-scroll grid gap-1 grid-cols-1
-            justify-items-center justify-center sm:grid-cols-3 lg:grid-cols-3 min-[425px]:grid-cols-2">
-          <NuxtImg fit="con" :key="photo" v-for="photo in photos" :src="photo"
-                  class="sm:w-[165px] sm:h-[100px] photo"></NuxtImg>
+        focus:ring-0 sm:text-sm sm:leading-6 disabled:border-text-200 disabled:text-text-700" @change="searchByQuery">
+        <div
+          class="h-[370px] images-box w-full mt-5 overflow-y-scroll grid gap-1 grid-cols-1
+            justify-items-center justify-center sm:grid-cols-3 lg:grid-cols-3 min-[425px]:grid-cols-2" @click="selectPhoto">
+          <NuxtImg
+                  v-for="photo in photos" :key="photo" fit="con" :src="photo"
+                  class="sm:w-[165px] sm:h-[100px] photo"/>
           <div v-if="isWasFirstSearch && !photos.length" class="text-ml self-start">
             Nothing found for your request, please enter another request
           </div>
@@ -27,7 +30,7 @@ import {getRandomPhotos, searchPhotosByQuery} from "~/unsplash.js";
 
 const emits = defineEmits(['selectedImg'])
 
-const props = defineProps({
+defineProps({
   isShow: {
     type: Boolean,
     required: true,

@@ -1,5 +1,5 @@
-import {isArray, isNotEmptyArray, isNotEmptyString} from "~/utils/validation/validators.js";
-import {ID, client, databases, account} from "~/appwrite.js";
+import { isNotEmptyArray, isNotEmptyString} from "~/utils/validation/validators.js";
+import {ID, databases} from "~/appwrite.js";
 import {APPWRITE_COLLECTION_WORDLIST_ID, APPWRITE_DATABASE_ID} from "~/utils/constants.js";
 import {useAuthStore} from "~/stores/auth.js";
 

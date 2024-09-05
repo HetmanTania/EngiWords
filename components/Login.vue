@@ -1,19 +1,22 @@
 <template>
   <div>
-    <form @submit.prevent class="from-animation flex flex-col items-end justify-between" action="">
+    <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
       <div class="flex flex-col items-start justify-between w-full">
         <label :class="labelClass" for="email">Email address</label>
-        <input v-model="email" :class="inputClass"
-               type="email" id="email" name="email" placeholder="Enter email" />
+        <input
+              id="email" v-model="email"
+               :class="inputClass" type="email" name="email" placeholder="Enter email" >
       </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
         <label :class="labelClass" for="email">Password</label>
-        <input v-model="password" :class="inputClass"
-               type="password" id="password" name="password" placeholder="Enter password" />
+        <input
+              id="password" v-model="password"
+               :class="inputClass" type="password" name="password" placeholder="Enter password" >
       </div>
-      <ErrorText :isShow="errorServer.isError" :text="errorServer.text"/>
-      <BaseBtnSubmit text="Login" @submit="handlerLogin"
-                     :isLoading="isLoading" :isDisabled="isSubmitDisabled"/>
+      <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
+      <BaseBtnSubmit
+text="Login" :is-loading="isLoading"
+                     :is-disabled="isSubmitDisabled" @submit="handlerLogin"/>
     </form>
   </div>
 </template>

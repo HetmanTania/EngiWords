@@ -25,6 +25,7 @@ export const useAuthStore = defineStore('auth', () =>
             } catch (e) {
                 user.value = null;
                 await navigateTo('/SignIn');
+                console.log(e);
             }
         }
 
