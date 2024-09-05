@@ -6,12 +6,13 @@
     <div class="formPart flex flex-col w-[500px] min-h-[455px] justify-start ">
       <div class="flex flex-col items-center mb-10">
         <h3 class="text-sm mb-5">Welcome to EngiWords..!</h3>
-        <DoubleRadioBtn :modelValue="action"
-                        @update:modelValue="$event => (action = $event)"
+        <DoubleRadioBtn
+                        :model-value="action"
                         :text-first-radio="LOGIN_OR_REGISTER.login.text"
                         :value-first-radio="LOGIN_OR_REGISTER.login.value"
                         :text-second-radio="LOGIN_OR_REGISTER.register.text"
-                        :value-second-radio="LOGIN_OR_REGISTER.register.value"/>
+                        :value-second-radio="LOGIN_OR_REGISTER.register.value"
+                        @update:model-value="$event => (action = $event)"/>
       </div>
       <Register v-if="action === LOGIN_OR_REGISTER.register.value"/>
       <Login v-else/>
@@ -22,7 +23,6 @@
 <script setup>
 import gsap from "~/gsap.js";
 import {LOGIN_OR_REGISTER} from "~/utils/constants.js";
-import {useAuthStore} from "~/stores/auth.js";
 
 definePageMeta({
   layout: 'auth'

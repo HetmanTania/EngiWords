@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
-    <LoaderPage v-if="isLoading"></LoaderPage>
+    <LoaderPage v-if="isLoading"/>
     <NuxtPage v-else/>
   </NuxtLayout>
 </template>

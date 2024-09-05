@@ -17,7 +17,7 @@ export const searchPhotosByQuery = async (query) => {
     });
 }
 
-export const getRandomPhotos = async (query) => {
+export const getRandomPhotos = async () => {
     const urlRandom ='https://api.unsplash.com/photos/random'
     const result = await axios.get(urlRandom, {
         params: {

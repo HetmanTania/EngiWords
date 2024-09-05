@@ -1,26 +1,29 @@
 <template>
-  <div ref="refReviewBlock" @mouseover="mouseOverAnimation" @mouseout="mouseOutAnimation"
-       class="relative preview-box cursor-pointer shadow-box
-          md:w-[375px] w-[305px] h-[330px] p-2 bg-white rounded-xl">
-    <div  class="h-2/3">
-      <NuxtImg class="rounded-xl mx-auto object-cover w-full h-full"  :src="wordList.pathToImg"></NuxtImg>
+  <div
+      ref="refReviewBlock" class="relative preview-box cursor-pointer shadow-box
+      md:w-[375px] w-[305px] h-[330px] p-2 bg-white rounded-xl" @mouseover="mouseOverAnimation"
+       @mouseout="mouseOutAnimation">
+    <div class="h-2/3">
+      <NuxtImg class="rounded-xl mx-auto object-cover w-full h-full"  :src="wordList.pathToImg"/>
     </div>
     <div class="h-1/3 pt-2.5 flex flex-col justify-between">
       <p class="text-base font-semibold">{{ wordList.name }}</p>
       <div class="flex items-start justify-between">
         <p class="text-xm font-light">30 words</p>
         <div>
-          <button class="cursor-pointer" ref="refEdit"
+          <button
+                  ref="refEdit" class="cursor-pointer"
                   @click="editWordList"
                   @mouseover="btnOverAnimation(refEdit)"
                   @mouseout="btnOutAnimation(refEdit)">
-            <EditIcon class="cursor-pointer" style="font-size: 32px"></EditIcon>
+            <EditIcon class="cursor-pointer" style="font-size: 32px"/>
           </button>
-          <button class="cursor-pointer" ref="refTrash"
+          <button
+                  ref="refTrash" class="cursor-pointer"
                   @click="deleteWordList"
                   @mouseover="btnOverAnimation(refTrash)"
                   @mouseout="btnOutAnimation(refTrash)">
-            <TrashIcon style="font-size: 32px"></TrashIcon>
+            <TrashIcon style="font-size: 32px"/>
           </button>
         </div>
       </div>

@@ -1,34 +1,37 @@
 <template>
   <Dialog @close="close">
-    <template v-slot:body>
+    <template #body>
       <div class="flex flex-col items-start justify-center">
         <h2 class=" font-bold mb-5 text-xm">{{ config.title }}</h2>
         <div class="w-full flex flex-col items-start justify-center">
-          <NuxtImg class="m-auto h-[250px]" :src="wordListCRUD.pathToImg"></NuxtImg>
-          <button @click="toggleUnsplashDialog()" class="mt-5">Upload Photo</button>
+          <NuxtImg class="m-auto h-[250px]" :src="wordListCRUD.pathToImg"/>
+          <button class="mt-5" @click="toggleUnsplashDialog()">Upload Photo</button>
         </div>
-        <input :disabled="isInputDisabled" @keydown.enter="submitHandle" v-model.trim="wordListCRUD.name"
-               placeholder="New set of words" type="text" class=" mt-5 block border-2 rounded-xl border-primary px-[20px] py-[10px]
+        <input
+              v-model.trim="wordListCRUD.name" :disabled="isInputDisabled" placeholder="New set of words"
+               type="text" class=" mt-5 block border-2 rounded-xl border-primary px-[20px] py-[10px]
         w-full bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500
-        focus:ring-0 sm:text-sm sm:leading-6 disabled:border-text-200 disabled:text-text-700"/>
+        focus:ring-0 sm:text-sm sm:leading-6 disabled:border-text-200 disabled:text-text-700" @keydown.enter="submitHandle">
       </div>
     </template>
-    <template v-slot:footer>
+    <template #footer>
       <div class="flex items-center justify-between mt-5">
-        <BtnSubmit @submit="submitHandle" :isDisabled="isSubmitDisabled()"
-                   :text="config.titleBtn" customClasses="w-1/3 p-2 rounded-xl border-2
+        <BtnSubmit
+          :is-disabled="isSubmitDisabled()" :text="config.titleBtn"
+          custom-classes="w-1/3 p-2 rounded-xl border-2
           border-secondary bg-secondary hover:bg-secondary-800 hover:text-white transition-all
-          ease-in-out active:bg-secondary mt-0" >
-        </BtnSubmit>
-        <button @click="close" class="w-1/3 p-2 rounded-xl border-2 border-primary bg-transparent text-xm text-primary font-semibold
+          ease-in-out active:bg-secondary mt-0" @submit="submitHandle" />
+        <button
+              class="w-1/3 p-2 rounded-xl border-2 border-primary bg-transparent text-xm text-primary font-semibold
               hover:bg-primary-800 hover:text-white transition-all ease-in-out
-              active:bg-primary">Cancel</button>
+              active:bg-primary" @click="close">Cancel</button>
       </div>
     </template>
   </Dialog>
-  <UnsplashDialog v-if="isUnsplashDialogOpen" :isShow="isUnsplashDialogOpen"
-                  @selectedImg="selectImg"
-                  @close="toggleUnsplashDialog()" ></UnsplashDialog>
+  <UnsplashDialog
+                  v-if="isUnsplashDialogOpen" :is-show="isUnsplashDialogOpen"
+                  @selected-img="selectImg"
+                  @close="toggleUnsplashDialog()" />
 </template>
 
 <script setup>
@@ -57,7 +60,7 @@ const props = defineProps({
 
 const config = configurationWordList[props.action];
 
-let wordListCRUD = ref({});
+const wordListCRUD = ref({});
 const isUnsplashDialogOpen = ref(false);
 
 onMounted(() => {
@@ -76,7 +79,7 @@ const initializeEmptyWordList = () => {
   }
 }
 
-const initializeWordListFromProps = (propWordList) => {
+const initializeWordListFromProps = () => {
   wordListCRUD.value = {...props.wordList};
 }
 

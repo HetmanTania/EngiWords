@@ -13,7 +13,6 @@ export default defineNuxtConfig({
   modules: [
       "@nuxt/image",
       '@pinia/nuxt',
-
       "@nuxtjs/google-fonts",
       ['@nuxtjs/google-fonts', {
         families: {

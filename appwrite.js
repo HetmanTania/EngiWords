@@ -1,6 +1,6 @@
-import { Client, Databases, Account } from "appwrite";
+import { Client, Databases, Account, ID } from "appwrite";
 import {APPWRITE_BASE_URL, APPWRITE_PROJECT_NAME} from "~/utils/constants.js";
-import { ID } from "appwrite";
+
 
 
 export const client = new Client();
