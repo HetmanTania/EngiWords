@@ -1,14 +1,29 @@
 <template>
-  <button @click="logout">logout</button>
-  <nuxt-link to="/SignIn">SignIn</nuxt-link>
+  <Header></Header>
+  <main class=" w-full h-full ">
+    <div class="w-full container mx-auto">
+      <h2 class="pl-[10px] pr-[10px] text-4xl pt-[40px]">My Word Lists</h2>
+    </div>
+    <WordListsController></WordListsController>
+  </main>
 </template>
 
 <script setup>
+
+import WordListsController from "~/components/WordLists.vue";
+
+
+
+definePageMeta({
+  layout: 'home'
+})
 
 const authStore = useAuthStore();
 
 const logout = () => {
   authStore.logout()
 }
+
+
 
 </script>

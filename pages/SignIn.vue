@@ -22,6 +22,7 @@
 <script setup>
 import gsap from "~/gsap.js";
 import {LOGIN_OR_REGISTER} from "~/utils/constants.js";
+import {useAuthStore} from "~/stores/auth.js";
 
 definePageMeta({
   layout: 'auth'

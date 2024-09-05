@@ -11,7 +11,6 @@ export default function useErrorFieldHandler(formInputs, validationRulesAndError
     };
 
     const checkFieldsErrors = () => {
-        console.log('checkFieldsErrors')
         if(!isNotEmptyObject(formInputs) || !isNotEmptyObject(validationRulesAndErrorMessage)) {
             return;
         }

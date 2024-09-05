@@ -66,6 +66,10 @@ export const useAuthStore = defineStore('auth', () =>
             return !!user.value
         })
 
-        return { user, initSession, register, login, logout, isAuth }
+        function getUserId() {
+            return user?.value?.$id;
+        }
+
+        return { user, getUserId, initSession, register, login, logout, isAuth }
     }
 )

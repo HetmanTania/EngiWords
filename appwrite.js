@@ -3,7 +3,7 @@ import {APPWRITE_BASE_URL, APPWRITE_PROJECT_NAME} from "~/utils/constants.js";
 import { ID } from "appwrite";
 
 
-const client = new Client();
+export const client = new Client();
 client
     .setEndpoint(APPWRITE_BASE_URL)
     .setProject(APPWRITE_PROJECT_NAME);

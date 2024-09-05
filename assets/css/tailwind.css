@@ -42,6 +42,8 @@
 
         --radius: 0.5rem;
 
+        --apricot: FED5C0;
+
         --textcontrast: #64d97b;
         --primarycontrast: #fb3c3c;
         --secondarycontrast: #64d97b;
@@ -61,7 +63,7 @@
 
         --primary5: hsl(234, 97%, 75%, 5%);
         --primary10: hsl(234, 97%, 75%, 10%);
-        --primary20: hsl(234, 97%, 75%, 20%);
+        --primary20: #e5e7fe;
         --primary30: hsl(234, 97%, 75%, 30%);
         --primary40: hsl(234, 97%, 75%, 40%);
         --primary50: hsl(234, 97%, 75%, 50%);
