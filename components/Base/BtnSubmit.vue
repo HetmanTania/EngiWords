@@ -1,5 +1,6 @@
 <template>
-  <button :disabled="isDisabled" @click="clickHandler" :class="btnClasses"
+  <button type="submit" :disabled="isDisabled" @click="clickHandler"
+          :class="btnClasses"
           :aria-busy="isLoading" :aria-label="text">
     <span v-if="!isLoading" class="h-[27px]" >{{text}}</span>
 
@@ -15,10 +16,10 @@
 <script setup>
 import {isBoolean, isNotEmptyString} from "~/utils/validation/validators.js";
 
-const baseBtnClasses = `mt-5 w-[118px] rounded-full bg-primary px-5 py-2 text-xm font-semibold text-white shadow-sm `;
+const baseBtnClasses = `w-[118px] rounded-full bg-primary px-5 py-2 text-xm font-semibold text-white shadow-sm `;
 const focusBtnClasses = `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`
 const activeBtnClasses = `transition duration-300 active:shadow-md active:shadow-secondary-600`
-const disabledBtnClasses = `disabled:bg-text-200`;
+const disabledBtnClasses = `disabled:border-text-200 disabled:bg-text-200`;
 const hoverBtnClasses = `hover:bg-accent`;
 
 

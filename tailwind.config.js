@@ -75,6 +75,7 @@ export default {
           800: "var(--secondary80)",
           900: "var(--secondary90)",
         },
+        apricot: 'var(--apricot)',
         gradient: 'var(--gradient)',
         destructive: {
           DEFAULT: "var(--destructive)",
@@ -100,6 +101,12 @@ export default {
           '50%': { transform: 'scale(50%)'},
           '100%': { transform: 'scale(100%)' }
         }
+      },
+      boxShadow: {
+        'box': '0px 18.83px 47.08px rgba(47, 50, 125, 0.1);',
+      },
+      backgroundImage: {
+        profile: 'url("public/svg/profile.svg")',
       },
       animation: {
         scalePoint200ms: 'scalePoint 1s .2s linear infinite',
