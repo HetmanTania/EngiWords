@@ -9,7 +9,7 @@
       </button>
       <slot name="body"/>
       <slot name="footer">
-        <button
+        <button @click="close"
               class="w-1/3 p-2 rounded-xl border-2 border-primary bg-transparent text-xm text-primary font-semibold
               hover:bg-primary-800 hover:text-white transition-all ease-in-out
               active:bg-primary">Close</button>

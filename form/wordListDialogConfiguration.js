@@ -3,6 +3,7 @@ import {isNotEmptyStringOrFilledSpaces} from "~/utils/validation/validators.js";
 const create = {
     title: 'Create a new Word List',
     titleBtn: 'Save',
+    placeholder: 'New set of words',
     isSubmitDisabled: ({title}) => {
        return !isNotEmptyStringOrFilledSpaces(title);
     }
@@ -11,6 +12,7 @@ const create = {
 const edit = {
     title: 'Edit a new Word List',
     titleBtn: 'Save',
+    placeholder: 'Enter name',
     isSubmitDisabled: ({editWordList, propsWordList}) => {
         return !(editWordList.name !== propsWordList.name ||
             editWordList.pathToImg !== propsWordList.pathToImg) ||
@@ -21,6 +23,7 @@ const edit = {
 const remove = {
     title: 'Are you sure you want to delete this Word List?',
     titleBtn: 'Yes',
+    placeholder: 'Delete this Word List?',
     isSubmitDisabled: () => {
         return false;
     }

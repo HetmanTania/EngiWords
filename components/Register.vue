@@ -3,16 +3,12 @@
     <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
      <div class="flex flex-col items-start justify-between w-full">
        <label :class="labelClass" for="email">Email address</label>
-       <input
-            id="email" v-model.trim="email"
-           :class="inputClass" type="email" name="email" placeholder="Enter email" >
+       <TextInput v-model="email" type="email" id="email" name="email" placeholder="Enter email"/>
        <ErrorText :is-show="errorsField?.email?.isError" :text="errorsField?.email?.text"/>
      </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
         <label :class="labelClass" for="userName">User name</label>
-        <input
-                id="userName" v-model.trim="userName"
-               :class="inputClass" type="text" name="userName" placeholder="Enter user name" >
+        <TextInput v-model="userName" type="text" id="userName" name="userName" placeholder="Enter user name"/>
         <ErrorText :is-show="errorsField?.userName?.isError" :text="errorsField?.userName?.text"/>
       </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
@@ -23,9 +19,9 @@
         <ErrorText :is-show="errorsField?.password?.isError" :text="errorsField?.password?.text" />
       </div>
       <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
-      <BtnSubmit
+      <BtnSubmit  @submit="handlerRegister"
                   text="Register" :is-loading="isLoading"
-                 :is-disabled="isSubmitDisabled" @submit="handlerRegister"/>
+                 :is-disabled="isSubmitDisabled" custom-classes="mt-4"/>
     </form>
   </div>
 </template>
@@ -39,6 +35,7 @@ import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
 import BtnSubmit from "~/components/Base/BtnSubmit.vue";
 import ErrorText from "~/components/Base/ErrorText.vue";
 import gsap from "~/gsap.js";
+import TextInput from "~/components/Base/TextInput.vue";
 
 const labelClass = `block text-xm font-medium leading-6 mb-3`;
 const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full

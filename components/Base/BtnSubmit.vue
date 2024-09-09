@@ -18,15 +18,6 @@
 <script setup>
 import {isBoolean, isNotEmptyString} from "~/utils/validation/validators.js";
 
-const baseBtnClasses = `w-[118px] rounded-full bg-primary px-5 py-2 text-xm font-semibold text-white shadow-sm `;
-const focusBtnClasses = `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`
-const activeBtnClasses = `transition duration-300 active:shadow-md active:shadow-secondary-600`
-const disabledBtnClasses = `disabled:border-text-200 disabled:bg-text-200`;
-const hoverBtnClasses = `hover:bg-accent`;
-
-
-const classesPointer = 'w-[18px] h-[18px] bg-white rounded-full fa-solid fa-circle fa-2xs';
-
  const props = defineProps({
   text: {
     type: String,
@@ -45,10 +36,17 @@ const classesPointer = 'w-[18px] h-[18px] bg-white rounded-full fa-solid fa-circ
   },
    customClasses: {
     type: String,
-    required: false,
     default: '',
    }
 })
+
+const baseBtnClasses = `w-[118px] rounded-full bg-primary px-5 py-2 text-xm font-semibold text-white shadow-sm `;
+const focusBtnClasses = `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`
+const activeBtnClasses = `transition duration-300 active:shadow-md active:shadow-secondary-600`
+const disabledBtnClasses = `disabled:border-text-200 disabled:bg-text-200`;
+const hoverBtnClasses = `hover:bg-accent`;
+
+const classesPointer = 'w-[18px] h-[18px] bg-white rounded-full fa-solid fa-circle fa-2xs';
 
 const btnClasses = computed(() => {
   return  [
