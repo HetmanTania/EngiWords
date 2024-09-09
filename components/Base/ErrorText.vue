@@ -19,7 +19,6 @@ const props = defineProps({
   },
   customClasses: {
     type: String,
-    required: false,
     default: '',
   }
 })

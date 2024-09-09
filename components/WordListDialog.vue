@@ -7,11 +7,9 @@
           <NuxtImg class="m-auto h-[250px]" :src="wordListCRUD.pathToImg"/>
           <button class="mt-5" @click="toggleUnsplashDialog()">Upload Photo</button>
         </div>
-        <input
-              v-model.trim="wordListCRUD.name" :disabled="isInputDisabled" placeholder="New set of words"
-               type="text" class=" mt-5 block border-2 rounded-xl border-primary px-[20px] py-[10px]
-        w-full bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500
-        focus:ring-0 sm:text-sm sm:leading-6 disabled:border-text-200 disabled:text-text-700" @keydown.enter="submitHandle">
+        <TextInput id="name" name="name" type="text" custom-classes="rounded-xl"
+                   v-model="wordListCRUD.name" :placeholder="config.placeholder"
+                   @keydown.enter="submitHandle"/>
       </div>
     </template>
     <template #footer>
@@ -42,6 +40,7 @@ import { configurationWordList } from '~/form/wordListDialogConfiguration.js'
 
 import Dialog from "~/components/Base/Dialog.vue";
 import BtnSubmit from "~/components/Base/BtnSubmit.vue";
+import TextInput from "~/components/Base/TextInput.vue";
 
 const emit = defineEmits(['close', OPERATION_WITH_DATA.create,
               OPERATION_WITH_DATA.edit, OPERATION_WITH_DATA.remove]);

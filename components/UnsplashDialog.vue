@@ -3,10 +3,9 @@
     <template #body>
       <div class="h-[517px]">
         <h2 class=" font-bold mb-5 text-xm">Upload Image</h2>
-        <input
-        v-model="query" placeholder="Search..." type="text" class=" mt-5 block border-2 rounded-xl border-primary px-[20px] py-[10px]
-        w-full bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500
-        focus:ring-0 sm:text-sm sm:leading-6 disabled:border-text-200 disabled:text-text-700" @change="searchByQuery">
+        <TextInput @change="searchByQuery" id="query" v-model="query"
+                   placeholder="Search..." name="query" type="text"
+                   custom-classes="rounded-xl"/>
         <div
           class="h-[370px] images-box w-full mt-5 overflow-y-scroll grid gap-1 grid-cols-1
             justify-items-center justify-center sm:grid-cols-3 lg:grid-cols-3 min-[425px]:grid-cols-2" @click="selectPhoto">
@@ -27,6 +26,7 @@
 import Dialog from "~/components/Base/Dialog.vue";
 import { isBoolean } from "~/utils/validation/validators.js";
 import {getRandomPhotos, searchPhotosByQuery} from "~/unsplash.js";
+import TextInput from "~/components/Base/TextInput.vue";
 
 const emits = defineEmits(['selectedImg'])
 
@@ -49,7 +49,7 @@ const selectPhoto = (e) => {
   }
 }
 
-onMounted( async () => {
+onMounted(async () => {
   await randomPhotos();
 })
 

@@ -7,7 +7,7 @@
       </div>
       <div>
         <div class="w-[40px] h-[40px] rounded-full profile">
-          <a class="block w-[40px] h-[40px] bg-profile" href="#"/>
+          <a class="block w-[40px] h-[40px] bg-cover bg-profile" href="#"/>
         </div>
       </div>
     </div>

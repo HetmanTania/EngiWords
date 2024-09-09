@@ -5,6 +5,7 @@
       <h2 class="pl-[10px] pr-[10px] text-4xl pt-[40px]">My Word Lists</h2>
     </div>
     <WordListsController/>
+    <button @click="logout">logout</button>
   </main>
 </template>
 
