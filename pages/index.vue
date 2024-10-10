@@ -1,5 +1,4 @@
 <template>
-  <TheHeader/>
   <main class=" w-full h-full ">
     <div class="w-full container mx-auto">
       <h2 class="pl-[10px] pr-[10px] text-4xl pt-[40px]">My Word Lists</h2>
