@@ -2,6 +2,7 @@ import { isNotEmptyArray, isNotEmptyString} from "~/utils/validation/validators.
 import {ID, databases} from "~/appwrite.js";
 import {APPWRITE_COLLECTION_WORDLIST_ID, APPWRITE_DATABASE_ID} from "~/utils/constants.js";
 import {useAuthStore} from "~/stores/auth.js";
+import {Query} from "appwrite";
 
 export const useWordListsStore = defineStore('wordLists', () => {
     const wordLists = ref([]);
@@ -10,7 +11,11 @@ export const useWordListsStore = defineStore('wordLists', () => {
 
     const requestWordLists = async () => {
         try {
-            const result = await databases.listDocuments(APPWRITE_DATABASE_ID, APPWRITE_COLLECTION_WORDLIST_ID);
+            const result =
+                await databases.listDocuments(
+                    APPWRITE_DATABASE_ID, APPWRITE_COLLECTION_WORDLIST_ID,
+                    [Query.equal('user_id', getUserId())
+                    ]);
             wordLists.value = result.documents.map((wordList) => {
                 return {
                     name: wordList.name,

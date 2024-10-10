@@ -1,7 +1,8 @@
 <template>
-  <div class="min-h-screen bg-background ">
+  <div class="min-h-screen bg-background">
     <div class="h-full mx-auto">
-      <NuxtPage/>
+      <TheHeader/>
+      <slot />
     </div>
   </div>
 
@@ -10,5 +11,11 @@
 <script>
 
 
+import {defineComponent} from "vue";
+import TheHeader from "~/components/TheHeader.vue";
+
+export default defineComponent({
+  components: {TheHeader}
+})
 </script>
 
