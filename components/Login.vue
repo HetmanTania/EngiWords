@@ -21,6 +21,7 @@
 
 <script setup>
 import {useAuthStore} from "~/stores/auth.js";
+import {useUIStore} from "~/stores/uiStore.js";
 import { errorMessageFromServer } from "~/form/RegisterAndLoginErrors.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
 import { isNotEmptyString } from '~/utils/validation/validators.js';
@@ -28,6 +29,10 @@ import { isNotEmptyString } from '~/utils/validation/validators.js';
 import ErrorText from "~/components/Base/ErrorText.vue";
 import gsap from "~/gsap.js";
 import TextInput from "~/components/Base/TextInput.vue";
+
+definePageMeta({
+  layout: 'auth'
+})
 
 const labelClass = `block text-xm font-medium leading-6 mb-3`;
 const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full

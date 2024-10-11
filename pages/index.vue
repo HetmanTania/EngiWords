@@ -17,7 +17,7 @@ definePageMeta({
   layout: 'home'
 })
 
-const authStore = useAuthStore();
+const authStore = useAuthStore()
 
 const logout = () => {
   authStore.logout()

@@ -109,7 +109,12 @@ export const useWordListsStore = defineStore('wordLists', () => {
     const getWordList = (id) => {
         return wordLists.value.find((el) => el.$id === id)
     }
-    return { wordLists, getWordList, requestWordLists, createWordList, editWordListRequest, deleteWordListRequest }
+
+    const destroyWordList = () => {
+        wordLists.value = [];
+    }
+
+    return { wordLists, getWordList, requestWordLists, createWordList, editWordListRequest, deleteWordListRequest, destroyWordList }
 })
 
 function findWordListById(wordLists, id) {
