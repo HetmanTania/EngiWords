@@ -37,6 +37,10 @@ import ErrorText from "~/components/Base/ErrorText.vue";
 import gsap from "~/gsap.js";
 import TextInput from "~/components/Base/TextInput.vue";
 
+definePageMeta({
+  layout: 'auth'
+})
+
 const labelClass = `block text-xm font-medium leading-6 mb-3`;
 const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full
         bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500

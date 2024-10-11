@@ -1,31 +1,35 @@
 import { account, ID } from "~/appwrite.js";
 import {navigateTo} from "#app";
-
 import {checkErrorTypeServerError} from "~/form/RegisterAndLoginErrors.js";
+import { useUIStore } from "~/stores/uiStore.js";
 
 export const useAuthStore = defineStore('auth', () =>
     {
+        const uiStore = useUIStore();
         const user = ref(null);
         const session = ref(null);
 
         const initSession = async () => {
             try {
+                uiStore.showPageLoader();
+
                 const currentSession = await account.getSession('current');
                 const userAccount = await account.get();
+
                 if(userAccount && session) {
                     session.value = currentSession;
                     user.value = userAccount;
                     await navigateTo('/')
                 }
                 else {
-                    user.value = null;
-                    await navigateTo('/SignIn');
+                   await userNotLogin();
                 }
 
             } catch (e) {
-                user.value = null;
-                await navigateTo('/SignIn');
-                console.log(e);
+                await userNotLogin()
+            }
+            finally {
+                uiStore.hiddenPageLoader();
             }
         }
 
@@ -56,11 +60,16 @@ export const useAuthStore = defineStore('auth', () =>
         const logout = async () => {
             try {
                 await account.deleteSession("current");
-                user.value = null;
-                await navigateTo('/SignIn');
+                await userNotLogin();
             } catch(e){
                 console.log(e);
             }
+        }
+
+        const userNotLogin = async () => {
+            user.value = null;
+            session.value = null;
+            await navigateTo('/SignIn');
         }
 
         const isAuth = computed(() => {
@@ -68,6 +77,7 @@ export const useAuthStore = defineStore('auth', () =>
         })
 
         function getUserId() {
+            console.log('userID', user?.value?.$id)
             return user?.value?.$id;
         }
 

@@ -73,4 +73,8 @@ watch(() => props.isShowDialog, (newValue) => {
   isWordListDialogOpen.value = newValue;
 })
 
+onUnmounted(() => {
+  wordListsStore.destroyWordList();
+})
+
 </script>
