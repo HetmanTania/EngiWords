@@ -2,17 +2,17 @@
   <div>
     <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
      <div class="flex flex-col items-start justify-between w-full">
-       <label :class="labelClass" for="email">Email address</label>
+       <BaseLabel text="Email address" nameInput="email"/>
        <TextInput v-model="email" type="email" id="email" name="email" placeholder="Enter email"/>
        <ErrorText :is-show="errorsField?.email?.isError" :text="errorsField?.email?.text"/>
      </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
-        <label :class="labelClass" for="userName">User name</label>
+        <BaseLabel text="User name" nameInput="userName"/>
         <TextInput v-model="userName" type="text" id="userName" name="userName" placeholder="Enter user name"/>
         <ErrorText :is-show="errorsField?.userName?.isError" :text="errorsField?.userName?.text"/>
       </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
-        <label :class="labelClass" for="email">Password</label>
+        <BaseLabel text="Password" nameInput="password"/>
         <input
               id="password" v-model.trim="password"
                :class="inputClass" type="password" name="password" placeholder="Enter password" >
@@ -32,11 +32,13 @@ import {useAuthStore} from "~/stores/auth.js";
 
 import useErrorFieldHandler from "~/composable/useErrorFieldHandler.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
+
 import BtnSubmit from "~/components/Base/BtnSubmit.vue";
 import ErrorText from "~/components/Base/ErrorText.vue";
-import gsap from "~/gsap.js";
 import TextInput from "~/components/Base/TextInput.vue";
+import BaseLabel from "~/components/Base/BaseLabel.vue";
 
+import gsap from "~/gsap.js";
 definePageMeta({
   layout: 'auth'
 })
@@ -83,14 +85,13 @@ const handlerRegister = async () => {
   errorFieldHandler.checkFieldsErrors();
 
   if (!errorFieldHandler.isHaveError.value) {
-    const registerFromInputsValue = {
-      email: email.value,
-      userName: userName.value,
-      password: password.value,
-    }
     try {
       isLoading.value = true;
-      await authStore.register(registerFromInputsValue);
+      await authStore.register({
+        email: email.value,
+        userName: userName.value,
+        password: password.value,
+      });
 
     } catch (e) {
       errorServerHandler.checkServerErrors(e.type);

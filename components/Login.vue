@@ -2,14 +2,13 @@
   <div>
     <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
       <div class="flex flex-col items-start justify-between w-full">
-        <label :class="labelClass" for="email">Email address</label>
+        <BaseLabel text="Email address" nameInput="email"/>
         <TextInput v-model="email" type="email" id="email" name="email" placeholder="Enter email"/>
       </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
-        <label :class="labelClass" for="email">Password</label>
-        <input
-              id="password" v-model="password"
-               :class="inputClass" type="password" name="password" placeholder="Enter password" >
+        <BaseLabel text="Password" nameInput="password"/>
+        <input id="password" v-model="password"
+               :class="inputClass" type="password" name="password" placeholder="Enter password">
       </div>
       <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
       <BaseBtnSubmit  @submit="handlerLogin"
@@ -21,20 +20,21 @@
 
 <script setup>
 import {useAuthStore} from "~/stores/auth.js";
-import {useUIStore} from "~/stores/uiStore.js";
+
 import { errorMessageFromServer } from "~/form/RegisterAndLoginErrors.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
 import { isNotEmptyString } from '~/utils/validation/validators.js';
 
 import ErrorText from "~/components/Base/ErrorText.vue";
-import gsap from "~/gsap.js";
 import TextInput from "~/components/Base/TextInput.vue";
+import BaseLabel from "~/components/Base/BaseLabel.vue";
+
+import gsap from "~/gsap.js";
 
 definePageMeta({
   layout: 'auth'
 })
 
-const labelClass = `block text-xm font-medium leading-6 mb-3`;
 const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full
         bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500
         focus:ring-0 sm:text-sm sm:leading-6`;
@@ -45,12 +45,10 @@ const password = ref('');
 
 const isLoading = ref(false);
 
-const loginFormInputs = {
+const errorServerHandler = useErrorServerHandler(errorMessageFromServer, {
   email: email,
   password: password,
-}
-
-const errorServerHandler = useErrorServerHandler(errorMessageFromServer, loginFormInputs);
+});
 const errorServer = ref(errorServerHandler.error);
 
 const authStore = useAuthStore();
@@ -65,12 +63,11 @@ onMounted(() => {
 
 const handlerLogin = async () => {
   try {
-    const loginFormInputs = {
+    isLoading.value = true;
+    await authStore.login({
       email: email.value,
       password: password.value,
-    }
-    isLoading.value = true;
-    await authStore.login(loginFormInputs);
+    });
   } catch (e) {
     errorServerHandler.checkServerErrors(e.type);
   }
