@@ -7,11 +7,11 @@
       </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
         <BaseLabel text="Password" nameInput="password"/>
-        <input id="password" v-model="password"
-               :class="inputClass" type="password" name="password" placeholder="Enter password">
+        <BasePasswordInput  id="password" v-model.trim="password"
+                            name="password" placeholder="Enter password"/>
       </div>
       <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
-      <BaseBtnSubmit  @submit="handlerLogin"
+      <BaseBtnSubmit  @submit="handleLogin"
                       text="Login" :is-loading="isLoading"
                       :is-disabled="isSubmitDisabled" custom-classes="mt-4"/>
     </form>
@@ -61,7 +61,7 @@ onMounted(() => {
   startFormInputsAnimation();
 })
 
-const handlerLogin = async () => {
+const handleLogin = async () => {
   try {
     isLoading.value = true;
     await authStore.login({

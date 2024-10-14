@@ -13,15 +13,14 @@
       </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
         <BaseLabel text="Password" nameInput="password"/>
-        <input
-              id="password" v-model.trim="password"
-               :class="inputClass" type="password" name="password" placeholder="Enter password" >
+        <BasePasswordInput  id="password" v-model.trim="password"
+                            name="password" placeholder="Enter password"/>
         <ErrorText :is-show="errorsField?.password?.isError" :text="errorsField?.password?.text" />
       </div>
       <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
-      <BtnSubmit  @submit="handlerRegister"
-                  text="Register" :is-loading="isLoading"
-                 :is-disabled="isSubmitDisabled" custom-classes="mt-4"/>
+      <BtnSubmit  @submit="handleRegister"
+                  text="Register" :is-loading="isLoading" :is-disabled="isSubmitDisabled"
+                  custom-classes="mt-4"/>
     </form>
   </div>
 </template>
@@ -33,22 +32,16 @@ import {useAuthStore} from "~/stores/auth.js";
 import useErrorFieldHandler from "~/composable/useErrorFieldHandler.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
 
+import BaseLabel from "~/components/Base/BaseLabel.vue";
 import BtnSubmit from "~/components/Base/BtnSubmit.vue";
 import ErrorText from "~/components/Base/ErrorText.vue";
 import TextInput from "~/components/Base/TextInput.vue";
-import BaseLabel from "~/components/Base/BaseLabel.vue";
 
 import gsap from "~/gsap.js";
+
 definePageMeta({
   layout: 'auth'
 })
-
-const labelClass = `block text-xm font-medium leading-6 mb-3`;
-const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full
-        bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500
-        focus:ring-0 sm:text-sm sm:leading-6`;
-
-
 
 const authStore = useAuthStore();
 
@@ -80,7 +73,7 @@ const isSubmitDisabled = computed(() => {
 
 const isLoading = ref(false);
 
-const handlerRegister = async () => {
+const handleRegister = async () => {
 
   errorFieldHandler.checkFieldsErrors();
 
