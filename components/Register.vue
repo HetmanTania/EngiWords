@@ -13,9 +13,10 @@
       </div>
       <div class="flex flex-col items-start justify-between w-full mt-5">
         <label :class="labelClass" for="email">Password</label>
-        <input
-              id="password" v-model.trim="password"
-               :class="inputClass" type="password" name="password" placeholder="Enter password" >
+        <PasswordInput id="password" model-value="password" placeholder="Enter password" name="password"/>
+<!--        <input-->
+<!--              id="password" v-model.trim="password"-->
+<!--               :class="inputClass" type="password" name="password" placeholder="Enter password" >-->
         <ErrorText :is-show="errorsField?.password?.isError" :text="errorsField?.password?.text" />
       </div>
       <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
@@ -32,10 +33,12 @@ import {useAuthStore} from "~/stores/auth.js";
 
 import useErrorFieldHandler from "~/composable/useErrorFieldHandler.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
+
+import PasswordInput from "~/components/Base/PasswordInput.vue";
 import BtnSubmit from "~/components/Base/BtnSubmit.vue";
 import ErrorText from "~/components/Base/ErrorText.vue";
-import gsap from "~/gsap.js";
 import TextInput from "~/components/Base/TextInput.vue";
+import gsap from "~/gsap.js";
 
 definePageMeta({
   layout: 'auth'
