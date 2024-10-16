@@ -1,22 +1,12 @@
 <template>
   <div>
     <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
-     <div class="flex flex-col items-start justify-between w-full">
-       <BaseLabel text="Email address" nameInput="email"/>
-       <TextInput v-model="email" type="email" id="email" name="email" placeholder="Enter email"/>
-       <ErrorText :is-show="errorsField?.email?.isError" :text="errorsField?.email?.text"/>
-     </div>
-      <div class="flex flex-col items-start justify-between w-full mt-5">
-        <BaseLabel text="User name" nameInput="userName"/>
-        <TextInput v-model="userName" type="text" id="userName" name="userName" placeholder="Enter user name"/>
-        <ErrorText :is-show="errorsField?.userName?.isError" :text="errorsField?.userName?.text"/>
-      </div>
-      <div class="flex flex-col items-start justify-between w-full mt-5">
-        <BaseLabel text="Password" nameInput="password"/>
-        <BasePasswordInput  id="password" v-model.trim="password"
-                            name="password" placeholder="Enter password"/>
-        <ErrorText :is-show="errorsField?.password?.isError" :text="errorsField?.password?.text" />
-      </div>
+      <TextFormField is-has-error-text="true" v-model="email" placeholder="Enter email" name-input="email" text-label="Email address" type="email"
+                      :error="{isShowErrorText: errorsField?.email?.isError, textError: errorsField?.email?.text}"/>
+      <TextFormField v-model="userName" placeholder="Enter user name" name-input="userName" text-label="User Name" type="text"
+                       :error="{isShowErrorText: errorsField?.userName?.isError, textError: errorsField?.userName?.text}"/>
+      <PasswordFormField v-model="password" placeholder="Enter password" name-input="password" text-label="Password"
+                           :error="{isShowErrorText: errorsField?.password?.isError, textError: errorsField?.password?.text}"/>
       <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
       <BtnSubmit  @submit="handleRegister"
                   text="Register" :is-loading="isLoading" :is-disabled="isSubmitDisabled"
@@ -26,18 +16,18 @@
 </template>
 
 <script setup>
+import BtnSubmit from "~/components/Base/BtnSubmit.vue";
+import ErrorText from "~/components/Base/ErrorText.vue";
+import TextFormField from "~/components/Base/TextFormField.vue";
+import PasswordFormField from "~/components/Base/PasswordFormField.vue";
+
 import {validationRulesAndErrorMessageRegisterForm, errorMessageFromServer} from "~/form/RegisterAndLoginErrors.js";
 import {useAuthStore} from "~/stores/auth.js";
 
 import useErrorFieldHandler from "~/composable/useErrorFieldHandler.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
-
-import BaseLabel from "~/components/Base/BaseLabel.vue";
-import BtnSubmit from "~/components/Base/BtnSubmit.vue";
-import ErrorText from "~/components/Base/ErrorText.vue";
-import TextInput from "~/components/Base/TextInput.vue";
-
 import gsap from "~/gsap.js";
+
 
 definePageMeta({
   layout: 'auth'

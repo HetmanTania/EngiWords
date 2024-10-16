@@ -1,5 +1,5 @@
 <template>
-  <span v-show="isShow" :class="['errorText', errorClass]"> {{ text }} </span>
+  <span ref="errorText" v-show="isShow" :class="['errorText', errorClass]"> {{ text }} </span>
 </template>
 
 <script setup>
@@ -24,6 +24,7 @@ const props = defineProps({
 })
 
 const errorClass = `text-sm text-error mt-2 relative`;
+const errorText = ref(null);
 
 const btnClasses = computed(() => {
   return  [
@@ -40,7 +41,7 @@ watch(() => props.isShow, (newValue) => {
 
 const startShowAnimation = () => {
   const tl = gsap.timeline();
-  tl.to('.errorText', {
+  tl.to(errorText.value, {
     y: 5,
     repeat: 3,
     yoyo: true,

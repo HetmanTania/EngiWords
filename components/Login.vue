@@ -1,15 +1,8 @@
 <template>
   <div>
     <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
-      <div class="flex flex-col items-start justify-between w-full">
-        <BaseLabel text="Email address" nameInput="email"/>
-        <TextInput v-model="email" type="email" id="email" name="email" placeholder="Enter email"/>
-      </div>
-      <div class="flex flex-col items-start justify-between w-full mt-5">
-        <BaseLabel text="Password" nameInput="password"/>
-        <BasePasswordInput  id="password" v-model.trim="password"
-                            name="password" placeholder="Enter password"/>
-      </div>
+      <TextFormField v-model="email" placeholder="Enter email" name-input="email" text-label="Email address" type="email"/>
+      <PasswordFormField v-model="password" placeholder="Enter password" name-input="password" text-label="Password"/>
       <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
       <BaseBtnSubmit  @submit="handleLogin"
                       text="Login" :is-loading="isLoading"
@@ -19,26 +12,21 @@
 </template>
 
 <script setup>
+import ErrorText from "~/components/Base/ErrorText.vue";
+import TextFormField from "~/components/Base/TextFormField.vue";
+import PasswordFormField from "~/components/Base/PasswordFormField.vue";
+
 import {useAuthStore} from "~/stores/auth.js";
 
 import { errorMessageFromServer } from "~/form/RegisterAndLoginErrors.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
 import { isNotEmptyString } from '~/utils/validation/validators.js';
 
-import ErrorText from "~/components/Base/ErrorText.vue";
-import TextInput from "~/components/Base/TextInput.vue";
-import BaseLabel from "~/components/Base/BaseLabel.vue";
-
 import gsap from "~/gsap.js";
 
 definePageMeta({
   layout: 'auth'
-})
-
-const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full
-        bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500
-        focus:ring-0 sm:text-sm sm:leading-6`;
-
+});
 
 const email = ref('');
 const password = ref('');
