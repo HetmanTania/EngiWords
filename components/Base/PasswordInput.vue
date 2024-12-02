@@ -1,15 +1,15 @@
 <template>
   <div class="relative w-full flex items-center justify-between">
     <input :id="id"
-           :type="isPasswordVisible ? 'text' : 'password'"
-           :name="name"
-           :class="inputClasses"
-           :placeholder="placeholder"
            v-model.trim="value"
-           @input="$emit('update:modelValue', $event.target.value)"
-           @change="$emit('change', $event.target.value)"/>
-    <button @click="isPasswordVisible = !isPasswordVisible" class="right-[30px] mr-[15px] top-[8px] absolute"
-            aria-label="Toggle password visibility">
+           :class="inputClasses"
+           :name="name"
+           :placeholder="placeholder"
+           :type="isPasswordVisible ? 'text' : 'password'"
+           @change="$emit('change', $event.target.value)"
+           @input="$emit('update:modelValue', $event.target.value)">
+    <button aria-label="Toggle password visibility" class="right-[30px] mr-[15px] top-[8px] absolute"
+            @click="isPasswordVisible = !isPasswordVisible">
       <CloseEyeIcon class="absolute" style="font-size: 28px"/>
       <OpenEyeIcon class="absolute" style="font-size: 28px"/>
     </button>
@@ -17,38 +17,38 @@
 </template>
 
 <script setup>
-import  CloseEyeIcon  from "~/components/Icons/CloseEyeIcon.vue";
-import  OpenEyeIcon  from "~/components/Icons/OpenEyeIcon.vue";
-import gsap from "~/gsap.js";
+import CloseEyeIcon from "~/components/Icons/CloseEyeIcon.vue";
+import OpenEyeIcon from "~/components/Icons/OpenEyeIcon.vue";
+import {animOpeningEye, animClosingEye} from "~/animations/passwordInputAnimation.js";
 
 import {isString} from "~/utils/validation/validators.js";
 
-const { id, name, customClasses, placeholder, modelValue } = defineProps({
-    id: {
-      type: String,
-      required: true,
-      validator: isString
-    },
-    name: {
-      type: String,
-      required: true,
-      validator: isString
-    },
-    placeholder: {
-      type: String,
-      required: true,
-      validator: isString
-    },
-    modelValue: {
-      type: String,
-      required: true,
-      validator: isString,
-    },
-    customClasses: {
-      type: String,
-      validator: isString,
-      default: '',
-    }
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+    validator: isString
+  },
+  name: {
+    type: String,
+    required: true,
+    validator: isString
+  },
+  placeholder: {
+    type: String,
+    required: true,
+    validator: isString
+  },
+  modelValue: {
+    type: String,
+    required: true,
+    validator: isString,
+  },
+  customClasses: {
+    type: String,
+    validator: isString,
+    default: '',
+  }
 })
 
 
@@ -61,10 +61,10 @@ const value = ref('');
 const isPasswordVisible = ref(false);
 
 const inputClasses = computed(() => {
-  return  [
+  return [
     baseInputClasses,
     focusInputClasses,
-    customClasses
+    props.customClasses
   ].join(' ');
 })
 
@@ -73,62 +73,12 @@ onMounted(() => {
 })
 
 watch(isPasswordVisible, (newValue) => {
-    if(newValue) {
-      animOpeningEye();
-    }
-    else {
-      animClosingEye();
-    }
+  if (newValue) {
+    animOpeningEye();
+  } else {
+    animClosingEye();
+  }
 })
-
-const animOpeningEye = () => {
-  const tl = gsap.timeline()
-      .set('#openEyeLine', {scaleY: 1})
-      .to('#closeEye', {
-        duration: .4,
-        transformOrigin: 'center',
-        scaleY: -1,
-      })
-      .to('#closeEye', {
-        autoAlpha: 0,
-        duration: .4
-      })
-      .to('#openEyeLine', {
-        autoAlpha: 1,
-        duration: .4,
-      })
-      .to('#openEyeCircle', {
-        transformOrigin: 'center',
-        autoAlpha: 1,
-        duration: .4,
-      })
-      .to('#closeEye', {
-        scaleY: 1,
-        transformOrigin: 'center',
-        duration: .4
-      });
-}
-
-const animClosingEye = () => {
-  const tl = gsap.timeline()
-      .to('#openEyeCircle', {
-        autoAlpha: 0,
-        duration: .4
-      })
-      .to('#openEyeLine', {
-        scaleY: -1,
-        transformOrigin: 'center 60%',
-        duration: .4
-      })
-      .to('#openEyeLine', {
-        autoAlpha: 0,
-        duration: .4
-      })
-      .to('#closeEye', {
-        autoAlpha: 1,
-        duration: .4
-      });
-}
 
 
 </script>

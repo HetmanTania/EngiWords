@@ -1,6 +1,7 @@
 <template>
-  <BaseFormField :text-label="textLabel" :name-input="nameInput" :error="error ? error : {}">
-    <TextInput v-model="value" :type="type" :id="nameInput" :placeholder="placeholder" :name="nameInput"
+  <BaseFormField :error="error ? error : {}" :label="label" :name="name">
+    <TextInput
+:id="name" v-model="value" :name="name" :placeholder="placeholder" :type="type"
                @input="$emit('update:modelValue', $event.target.value)"/>
   </BaseFormField>
 </template>
@@ -10,7 +11,7 @@ import TextInput from "~/components/Base/TextInput.vue";
 import {isNotEmptyString, isString} from "~/utils/validation/validators.js";
 
 defineProps({
-  textLabel: {
+  label: {
     type: String,
     required: true,
     validator: isNotEmptyString
@@ -22,7 +23,7 @@ defineProps({
       return value === 'text' || value === 'email';
     }
   },
-  nameInput: {
+  name: {
     type: String,
     required: true,
     validator: isNotEmptyString

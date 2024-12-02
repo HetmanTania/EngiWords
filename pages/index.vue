@@ -11,7 +11,6 @@
 <script setup>
 
 import WordListsController from "~/components/WordLists.vue";
-import TheHeader from "~/components/TheHeader.vue";
 
 definePageMeta({
   layout: 'home'

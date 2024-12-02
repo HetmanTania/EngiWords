@@ -8,7 +8,7 @@ export default function useErrorServerHandler(serverErrorMessages, registerFromI
     });
 
     const checkServerErrors = (errorType) => {
-        if(!isNotEmptyObject(serverErrorMessages) || !isNotEmptyString(errorType)) {
+        if (!isNotEmptyObject(serverErrorMessages) || !isNotEmptyString(errorType)) {
             return;
         }
 
@@ -17,7 +17,7 @@ export default function useErrorServerHandler(serverErrorMessages, registerFromI
 
     const validateServerError = (errorType) => {
         const errorMessage = getErrorMessage(errorType);
-        return { isError: true,  text: errorMessage };
+        return {isError: true, text: errorMessage};
     }
 
     const getErrorMessage = (errorType) => {
@@ -27,14 +27,14 @@ export default function useErrorServerHandler(serverErrorMessages, registerFromI
     const setWatchers = () => {
         Object.keys(registerFromInputs).forEach((key) => {
             watch(registerFromInputs[key], () => {
-                if(error.value.isError) {
+                if (error.value.isError) {
                     resetError();
                 }
             })
         })
     }
 
-    const isHaveError =  computed(()=> {
+    const isHaveError = computed(() => {
         return error.value.isError
     })
 

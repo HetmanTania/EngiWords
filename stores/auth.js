@@ -1,35 +1,28 @@
-import { account, ID } from "~/appwrite.js";
+import {account, ID} from "~/appwrite.js";
 import {navigateTo} from "#app";
-import {checkErrorTypeServerError} from "~/form/RegisterAndLoginErrors.js";
-import { useUIStore } from "~/stores/uiStore.js";
+import {checkErrorTypeServerError} from "~/errorsAndConfiguration/RegisterAndLoginErrors.js";
 
-export const useAuthStore = defineStore('auth', () =>
-    {
-        const uiStore = useUIStore();
+export const useAuthStore = defineStore('auth', () => {
+
         const user = ref(null);
         const session = ref(null);
 
         const initSession = async () => {
             try {
-                uiStore.showPageLoader();
-
                 const currentSession = await account.getSession('current');
                 const userAccount = await account.get();
 
-                if(userAccount && session) {
+                if (userAccount && session) {
                     session.value = currentSession;
                     user.value = userAccount;
                     await navigateTo('/')
-                }
-                else {
-                   await userNotLogin();
+                } else {
+                    await userNotLogin();
                 }
 
             } catch (e) {
                 await userNotLogin()
-            }
-            finally {
-                uiStore.hiddenPageLoader();
+            } finally {
             }
         }
 
@@ -39,19 +32,19 @@ export const useAuthStore = defineStore('auth', () =>
                 await login({email, password});
 
             } catch (e) {
-                if(checkErrorTypeServerError(e.type)) {
+                if (checkErrorTypeServerError(e.type)) {
                     throw e;
                 }
             }
         }
 
-        const login = async ({ email, password }) => {
+        const login = async ({email, password}) => {
             try {
                 await account.createEmailPasswordSession(email, password);
                 await initSession();
             } catch (e) {
                 console.log(e);
-                if(checkErrorTypeServerError(e.type)) {
+                if (checkErrorTypeServerError(e.type)) {
                     throw e;
                 }
             }
@@ -61,7 +54,7 @@ export const useAuthStore = defineStore('auth', () =>
             try {
                 await account.deleteSession("current");
                 await userNotLogin();
-            } catch(e){
+            } catch (e) {
                 console.log(e);
             }
         }
@@ -73,14 +66,17 @@ export const useAuthStore = defineStore('auth', () =>
         }
 
         const isAuth = computed(() => {
-            return !!user.value
+            return !!user.value;
+        })
+
+        const userEmail = computed(() => {
+            return user.value?.email;
         })
 
         function getUserId() {
-            console.log('userID', user?.value?.$id)
             return user?.value?.$id;
         }
 
-        return { user, getUserId, initSession, register, login, logout, isAuth }
+        return {user, getUserId, initSession, register, login, logout, isAuth, userEmail}
     }
 )

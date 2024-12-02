@@ -52,7 +52,7 @@ export const validationRulesAndErrorMessageRegisterForm = {
 }
 
 export function checkErrorTypeServerError(errorType) {
-    if(!isNotEmptyString(errorType)) {
+    if (!isNotEmptyString(errorType)) {
         return;
     }
 

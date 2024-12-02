@@ -5,7 +5,7 @@ const create = {
     titleBtn: 'Save',
     placeholder: 'New set of words',
     isSubmitDisabled: ({title}) => {
-       return !isNotEmptyStringOrFilledSpaces(title);
+        return !isNotEmptyStringOrFilledSpaces(title);
     }
 }
 
@@ -15,7 +15,7 @@ const edit = {
     placeholder: 'Enter name',
     isSubmitDisabled: ({editWordList, propsWordList}) => {
         return !(editWordList.name !== propsWordList.name ||
-            editWordList.pathToImg !== propsWordList.pathToImg) ||
+                editWordList.pathToImg !== propsWordList.pathToImg) ||
             !isNotEmptyStringOrFilledSpaces(editWordList.name)
     }
 }

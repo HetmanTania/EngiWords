@@ -1,30 +1,30 @@
 <template>
- <div class="flex flex-col items-start justify-between w-full mt-5">
-   <BaseLabel :text="textLabel" :name-input="nameInput"/>
-   <slot></slot>
-   <ErrorText :is-show="error?.isShowErrorText" :text="error?.textError" />
- </div>
+  <div class="flex flex-col items-start justify-between w-full mt-5">
+    <BaseLabel :name="name" :text="label"/>
+    <slot/>
+    <ErrorText :is-show="error?.isShowErrorText" :text="error?.textError"/>
+  </div>
 </template>
 
 <script setup>
-import {isNotEmptyString} from "~/utils/validation/validators.js";
 import BaseLabel from "~/components/Base/BaseLabel.vue";
 import ErrorText from "~/components/Base/ErrorText.vue";
+import {isNotEmptyString} from "~/utils/validation/validators.js";
 
 defineProps({
-  textLabel: {
+  label: {
     type: String,
     required: true,
     validator: isNotEmptyString
   },
-  nameInput: {
+  name: {
     type: String,
     required: true,
     validator: isNotEmptyString
   },
   error: {
     type: Object,
-    required: false
+    required: false,
   },
 })
 

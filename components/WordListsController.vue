@@ -3,26 +3,23 @@
       class="grid-cols-1 gap-4 mt-4 grid justify-items-center sm:justify-between
       xl:grid-cols-[375px_minmax(0,375px)_375px] md:grid-cols-[minmax(0,375px)_375px] sm:grid-cols-[minmax(0,305px)_305px]">
     <WordListBlock
-                    v-for="wordList in wordListsStore.wordLists" :key="wordList.id"
-                   :word-list="wordList"
-                   @delete-word-list="setAction(OPERATION_WITH_DATA.remove, wordList)"
-                   @edit-word-list="setAction(OPERATION_WITH_DATA.edit, wordList)"/>
+        v-for="wordList in wordListsStore.wordLists" :key="wordList.id"
+        :word-list="wordList"
+        @delete-word-list="setAction(OPERATION_WITH_DATA.remove, wordList)"
+        @edit-word-list="setAction(OPERATION_WITH_DATA.edit, wordList)"/>
   </div>
   <WordListDialog
-                  v-if="isWordListDialogOpen" :word-list="CRUDwordList" :action="CRUDAction"
-                   @create="createNewWordList" @edit="editWordList" @remove="deleteWordList"
-                   @close="closeWordListDialog"/>
+      v-if="isWordListDialogOpen" :action="CRUDAction" :word-list="CRUDwordList"
+      @close="closeWordListDialog" @create="createNewWordList" @edit="editWordList"
+      @remove="deleteWordList"/>
 </template>
 
 <script setup>
-
-import { isBoolean } from "~/utils/validation/validators.js";
-import { OPERATION_WITH_DATA } from "~/utils/constants.js";
-
 import WordListBlock from "~/components/WordListBlock.vue";
 import WordListDialog from "~/components/WordListDialog.vue"
-
-const wordListsStore = useWordListsStore();
+import {useWordListsStore} from "~/stores/wordLists.js";
+import {isBoolean} from "~/utils/validation/validators.js";
+import {OPERATION_WITH_DATA} from "~/utils/constants.js";
 
 const props = defineProps({
   isShowDialog: {
@@ -31,8 +28,9 @@ const props = defineProps({
     validator: isBoolean
   },
 })
-
 const emits = defineEmits(['editWordList', 'closeCrateWordListDialog'])
+
+const wordListsStore = useWordListsStore();
 
 const CRUDAction = ref('');
 const CRUDwordList = ref({});
@@ -67,7 +65,7 @@ const closeWordListDialog = () => {
 }
 
 watch(() => props.isShowDialog, (newValue) => {
-  if(newValue) {
+  if (newValue) {
     setAction(OPERATION_WITH_DATA.create, {});
   }
   isWordListDialogOpen.value = newValue;

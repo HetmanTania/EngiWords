@@ -1,5 +1,6 @@
-import { OPERATION_WITH_DATA}  from "~/utils/constants.js";
-import { urlRegex } from "~/utils/validation/regExp.js";
+import {OPERATION_WITH_DATA} from "~/utils/constants.js";
+import {urlRegex} from "~/utils/validation/regExp.js";
+
 function isNumber(value) {
     return typeof value === 'number';
 }

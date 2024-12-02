@@ -1,16 +1,27 @@
 <template>
   <div>
-    <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
-      <TextFormField is-has-error-text="true" v-model="email" placeholder="Enter email" name-input="email" text-label="Email address" type="email"
-                      :error="{isShowErrorText: errorsField?.email?.isError, textError: errorsField?.email?.text}"/>
-      <TextFormField v-model="userName" placeholder="Enter user name" name-input="userName" text-label="User Name" type="text"
-                       :error="{isShowErrorText: errorsField?.userName?.isError, textError: errorsField?.userName?.text}"/>
-      <PasswordFormField v-model="password" placeholder="Enter password" name-input="password" text-label="Password"
-                           :error="{isShowErrorText: errorsField?.password?.isError, textError: errorsField?.password?.text}"/>
-      <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
-      <BtnSubmit  @submit="handleRegister"
-                  text="Register" :is-loading="isLoading" :is-disabled="isSubmitDisabled"
-                  custom-classes="mt-4"/>
+    <form action="" class="from-animation flex flex-col items-end justify-between" @submit.prevent>
+      <TextFormField
+v-model="email"
+                     :error="{isShowErrorText: fieldErrors?.email?.isError, textError: fieldErrors?.email?.text}"
+                     is-has-error-text="true"
+                     label="Email address" name="email" placeholder="Enter email"
+                     type="email"/>
+      <TextFormField
+v-model="userName"
+                     :error="{isShowErrorText: fieldErrors?.userName?.isError, textError: fieldErrors?.userName?.text}"
+                     label="User Name" name="userName" placeholder="Enter user name"
+                     type="text"/>
+      <PasswordFormField
+v-model="password"
+                         :error="{isShowErrorText: fieldErrors?.password?.isError, textError: fieldErrors?.password?.text}"
+                         label="Password" name="password"
+                         placeholder="Enter password"/>
+      <ErrorText :is-show="serverError.isError" :text="serverError.text"/>
+      <BtnSubmit
+:is-disabled="isSubmitDisabled"
+                 :is-loading="isLoading" custom-classes="mt-4" text="Register"
+                 @submit="handleRegister"/>
     </form>
   </div>
 </template>
@@ -20,13 +31,16 @@ import BtnSubmit from "~/components/Base/BtnSubmit.vue";
 import ErrorText from "~/components/Base/ErrorText.vue";
 import TextFormField from "~/components/Base/TextFormField.vue";
 import PasswordFormField from "~/components/Base/PasswordFormField.vue";
+import {startFormInputsAnimation} from "~/animations/registerAnimation.js";
 
-import {validationRulesAndErrorMessageRegisterForm, errorMessageFromServer} from "~/form/RegisterAndLoginErrors.js";
+import {
+  validationRulesAndErrorMessageRegisterForm,
+  errorMessageFromServer
+} from "~/errorsAndConfiguration/RegisterAndLoginErrors.js";
 import {useAuthStore} from "~/stores/auth.js";
 
 import useErrorFieldHandler from "~/composable/useErrorFieldHandler.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
-import gsap from "~/gsap.js";
 
 
 definePageMeta({
@@ -44,20 +58,20 @@ const registerFromInputs = {
   userName: userName,
   password: password,
 }
-const errorFieldHandler = useErrorFieldHandler(registerFromInputs, validationRulesAndErrorMessageRegisterForm);
-const errorsField = ref(errorFieldHandler.errors)
+const handleFieldError = useErrorFieldHandler(registerFromInputs, validationRulesAndErrorMessageRegisterForm);
+const fieldErrors = ref(handleFieldError.errors)
 
-const errorServerHandler = useErrorServerHandler(errorMessageFromServer, registerFromInputs);
-const errorServer = ref(errorServerHandler.error);
+const handleServerError = useErrorServerHandler(errorMessageFromServer, registerFromInputs);
+const serverError = ref(handleServerError.error);
 
 onMounted(() => {
   startFormInputsAnimation();
 })
 
 const isSubmitDisabled = computed(() => {
-  return errorFieldHandler.isFieldsEmpty.value
-      || errorFieldHandler.isHaveError.value
-      || errorServerHandler.isHaveError.value;
+  return handleFieldError.isFieldsEmpty.value
+      || handleFieldError.isHaveError.value
+      || handleServerError.isHaveError.value;
 
 })
 
@@ -65,9 +79,9 @@ const isLoading = ref(false);
 
 const handleRegister = async () => {
 
-  errorFieldHandler.checkFieldsErrors();
+  handleFieldError.checkFieldsErrors();
 
-  if (!errorFieldHandler.isHaveError.value) {
+  if (!handleFieldError.isHaveError.value) {
     try {
       isLoading.value = true;
       await authStore.register({
@@ -77,26 +91,11 @@ const handleRegister = async () => {
       });
 
     } catch (e) {
-      errorServerHandler.checkServerErrors(e.type);
-    }
-    finally {
+      handleServerError.checkServerErrors(e.type);
+    } finally {
       isLoading.value = false;
     }
   }
-}
-
-const startFormInputsAnimation = () => {
-  const tl = gsap.timeline();
-  tl.to('input', {
-    scale: 1.1,
-    duration: .3,
-    delay: 2,
-    stagger: .1,
-  }).to('input',{
-    scale: 1,
-    delay: .1,
-    stagger: .1,
-  });
 }
 
 </script>

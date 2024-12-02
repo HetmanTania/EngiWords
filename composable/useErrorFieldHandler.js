@@ -1,17 +1,17 @@
-import { isNotEmptyObject} from "~/utils/validation/validators.js";
+import {isNotEmptyObject} from "~/utils/validation/validators.js";
 
 export default function useErrorFieldHandler(formInputs, validationRulesAndErrorMessage) {
 
     const errors = ref({});
 
-    const initErrors = () => {
+    const initializeErrors = () => {
         Object.keys(formInputs).forEach((key) => {
-            initErrorEmpty(key);
+            initializeErrorEmpty(key);
         });
     };
 
     const checkFieldsErrors = () => {
-        if(!isNotEmptyObject(formInputs) || !isNotEmptyObject(validationRulesAndErrorMessage)) {
+        if (!isNotEmptyObject(formInputs) || !isNotEmptyObject(validationRulesAndErrorMessage)) {
             return;
         }
 
@@ -22,7 +22,7 @@ export default function useErrorFieldHandler(formInputs, validationRulesAndError
 
     const validateField = (fieldKey, fieldValue) => {
         const validationRule = validationRulesAndErrorMessage[fieldKey];
-        if(!validationRule.regex.test(fieldValue)) {
+        if (!validationRule.regex.test(fieldValue)) {
             return {text: validationRule.errText, isError: true};
         }
 
@@ -30,19 +30,19 @@ export default function useErrorFieldHandler(formInputs, validationRulesAndError
     };
 
     const isFieldsEmpty = computed(() => {
-        return Object.values(formInputs).some((item) =>  !item.value.length);
+        return Object.values(formInputs).some((item) => !item.value.length);
     });
 
 
     const isHaveError = computed(() => {
-        return Object.values(errors.value).some((error) =>  error.isError);
+        return Object.values(errors.value).some((error) => error.isError);
     });
 
     const setWatchers = () => {
         Object.keys(formInputs).forEach((key) => {
             watch(formInputs[key], () => {
-                if(errors.value[key]?.isError) {
-                    initErrorEmpty(key);
+                if (errors.value[key]?.isError) {
+                    initializeErrorEmpty(key);
                 }
             });
         });
@@ -50,20 +50,22 @@ export default function useErrorFieldHandler(formInputs, validationRulesAndError
 
     const resetAllErrors = () => {
         Object.keys(errors.value).forEach((key) => {
-            initErrorEmpty(key);
+            initializeErrorEmpty(key);
         });
     };
 
-    const initErrorEmpty = (key) => {
+    const initializeErrorEmpty = (key) => {
         errors.value[key] = {
             isError: false,
             text: '',
         };
     };
 
-    initErrors();
-    setWatchers();
+    onMounted(() => {
+        initializeErrors();
+        setWatchers();
+    })
 
-    return { errors, checkFieldsErrors, isHaveError, isFieldsEmpty };
+    return {errors, checkFieldsErrors, isHaveError, isFieldsEmpty};
 
 }

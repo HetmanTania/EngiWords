@@ -1,4 +1,4 @@
-import { isNotEmptyArray, isNotEmptyString} from "~/utils/validation/validators.js";
+import {isNotEmptyArray, isNotEmptyString} from "~/utils/validation/validators.js";
 import {ID, databases} from "~/appwrite.js";
 import {APPWRITE_COLLECTION_WORDLIST_ID, APPWRITE_DATABASE_ID} from "~/utils/constants.js";
 import {useAuthStore} from "~/stores/auth.js";
@@ -7,14 +7,14 @@ import {Query} from "appwrite";
 export const useWordListsStore = defineStore('wordLists', () => {
     const wordLists = ref([]);
 
-    const { getUserId } = useAuthStore();
+    const authStore = useAuthStore();
 
     const requestWordLists = async () => {
         try {
             const result =
                 await databases.listDocuments(
                     APPWRITE_DATABASE_ID, APPWRITE_COLLECTION_WORDLIST_ID,
-                    [Query.equal('user_id', getUserId())
+                    [Query.equal('user_id', authStore.getUserId())
                     ]);
             wordLists.value = result.documents.map((wordList) => {
                 return {
@@ -31,7 +31,7 @@ export const useWordListsStore = defineStore('wordLists', () => {
     }
 
     const createWordList = async (wordList) => {
-        if(!isNotEmptyString(wordList.name) && !isNotEmptyString(wordList.pathToImg)) {
+        if (!isNotEmptyString(wordList.name) && !isNotEmptyString(wordList.pathToImg)) {
             return;
         }
 
@@ -39,7 +39,7 @@ export const useWordListsStore = defineStore('wordLists', () => {
             name: wordList.name,
             path_to_img: wordList.pathToImg,
             id: ID.unique(),
-            user_id: getUserId()
+            user_id: authStore.getUserId()
         }
 
         try {
@@ -79,23 +79,23 @@ export const useWordListsStore = defineStore('wordLists', () => {
         wordLists.value = wordLists.value.filter((el) => el.$id !== id);
     }
 
-    const editWordListRequest = async (id, { name, pathToImg }) =>  {
+    const editWordListRequest = async (id, {name, pathToImg}) => {
         try {
             await databases.updateDocument(APPWRITE_DATABASE_ID, APPWRITE_COLLECTION_WORDLIST_ID, id,
                 {
                     name,
                     path_to_img: pathToImg
                 });
-            editWordList(id, { name, pathToImg });
+            editWordList(id, {name, pathToImg});
         } catch (e) {
             console.log(e)
         }
     }
 
 
-    const editWordList = (id, { name, pathToImg }) => {
+    const editWordList = (id, {name, pathToImg}) => {
         wordLists.value = wordLists.value.map((el) => {
-            if(el.$id === id) {
+            if (el.$id === id) {
                 return {
                     ...el,
                     name: name,
@@ -106,7 +106,7 @@ export const useWordListsStore = defineStore('wordLists', () => {
         })
     }
 
-    const getWordList = (id) => {
+    const getWordListById = (id) => {
         return wordLists.value.find((el) => el.$id === id)
     }
 
@@ -114,11 +114,19 @@ export const useWordListsStore = defineStore('wordLists', () => {
         wordLists.value = [];
     }
 
-    return { wordLists, getWordList, requestWordLists, createWordList, editWordListRequest, deleteWordListRequest, destroyWordList }
+    return {
+        wordLists,
+        getWordListById,
+        requestWordLists,
+        createWordList,
+        editWordListRequest,
+        deleteWordListRequest,
+        destroyWordList
+    }
 })
 
 function findWordListById(wordLists, id) {
-    if(!isNotEmptyArray(wordLists)) { // check id
+    if (!isNotEmptyArray(wordLists)) { // check id
         return -1;
     }
 
@@ -126,7 +134,7 @@ function findWordListById(wordLists, id) {
 }
 
 function getIndexWordListById(wordLists, id) {
-    if(!isNotEmptyArray(wordLists)) { // check id
+    if (!isNotEmptyArray(wordLists)) { // check id
         return -1;
     }
 

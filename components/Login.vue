@@ -1,12 +1,12 @@
 <template>
   <div>
-    <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
-      <TextFormField v-model="email" placeholder="Enter email" name-input="email" text-label="Email address" type="email"/>
-      <PasswordFormField v-model="password" placeholder="Enter password" name-input="password" text-label="Password"/>
-      <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
-      <BaseBtnSubmit  @submit="handleLogin"
-                      text="Login" :is-loading="isLoading"
-                      :is-disabled="isSubmitDisabled" custom-classes="mt-4"/>
+    <form action="" class="from-animation flex flex-col items-end justify-between" @submit.prevent>
+      <TextFormField v-model="email" label="Email address" name="email" placeholder="Enter email" type="email"/>
+      <PasswordFormField v-model="password" label="Password" name="password" placeholder="Enter password"/>
+      <ErrorText :is-show="serverError.isError" :text="serverError.text"/>
+      <BaseBtnSubmit :is-disabled="isSubmitDisabled"
+                     :is-loading="isLoading" custom-classes="mt-4"
+                     text="Login" @submit="handleLogin"/>
     </form>
   </div>
 </template>
@@ -15,38 +15,36 @@
 import ErrorText from "~/components/Base/ErrorText.vue";
 import TextFormField from "~/components/Base/TextFormField.vue";
 import PasswordFormField from "~/components/Base/PasswordFormField.vue";
-
+import {startFormInputsAnimation} from "~/animations/loginAimation.js";
 import {useAuthStore} from "~/stores/auth.js";
 
-import { errorMessageFromServer } from "~/form/RegisterAndLoginErrors.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
-import { isNotEmptyString } from '~/utils/validation/validators.js';
-
-import gsap from "~/gsap.js";
+import {errorMessageFromServer} from "~/errorsAndConfiguration/RegisterAndLoginErrors.js";
+import {isNotEmptyString} from '~/utils/validation/validators.js';
 
 definePageMeta({
   layout: 'auth'
 });
+
+const authStore = useAuthStore();
 
 const email = ref('');
 const password = ref('');
 
 const isLoading = ref(false);
 
-const errorServerHandler = useErrorServerHandler(errorMessageFromServer, {
+const handleServerError = useErrorServerHandler(errorMessageFromServer, {
   email: email,
   password: password,
 });
-const errorServer = ref(errorServerHandler.error);
-
-const authStore = useAuthStore();
-
-const isSubmitDisabled = computed(() => {
-  return errorServerHandler.isHaveError.value || !isNotEmptyString(email.value) || !isNotEmptyString(password.value);
-})
+const serverError = ref(handleServerError.error);
 
 onMounted(() => {
   startFormInputsAnimation();
+})
+
+const isSubmitDisabled = computed(() => {
+  return handleServerError.isHaveError.value || !isNotEmptyString(email.value) || !isNotEmptyString(password.value);
 })
 
 const handleLogin = async () => {
@@ -57,25 +55,10 @@ const handleLogin = async () => {
       password: password.value,
     });
   } catch (e) {
-    errorServerHandler.checkServerErrors(e.type);
-  }
-  finally {
+    handleServerError.checkServerErrors(e.type);
+  } finally {
     isLoading.value = false;
   }
 }
 
-
-const startFormInputsAnimation = () => {
-  const tl = gsap.timeline();
-  tl.to('input', {
-    scale: 1.1,
-    duration: .3,
-    delay: 2,
-    stagger: .1,
-  }).to('input',{
-    scale: 1,
-    delay: .1,
-    stagger: .1,
-  });
-}
 </script>
