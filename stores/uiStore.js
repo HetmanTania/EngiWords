@@ -1,12 +1,12 @@
-export const useUIStore = defineStore('uiStore', () => {
-    const isPageLoaderShow = ref(true);
+export const useUIStore = defineStore("uiStore", () => {
+  const isPageLoaderShow = ref(true);
 
-    const showPageLoader = () => {
-        isPageLoaderShow.value = true;
-    }
-    const hiddenPageLoader = () => {
-        isPageLoaderShow.value = false;
-    }
+  const showPageLoader = () => {
+    isPageLoaderShow.value = true;
+  };
+  const hiddenPageLoader = () => {
+    isPageLoaderShow.value = false;
+  };
 
-    return {isPageLoaderShow, showPageLoader, hiddenPageLoader}
-})
+  return { isPageLoaderShow, showPageLoader, hiddenPageLoader };
+});

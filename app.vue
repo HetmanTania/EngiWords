@@ -1,14 +1,14 @@
 <template>
-  <LoaderPage v-if="uiStore.isPageLoaderShow"/>
+  <LoaderPage v-if="uiStore.isPageLoaderShow" />
   <NuxtLayout v-else>
-    <NuxtPage/>
+    <NuxtPage />
   </NuxtLayout>
 </template>
 
 <script setup>
-import {useAuthStore} from "~/stores/auth.js";
-import {useUIStore} from "~/stores/uiStore.js";
-import {onMounted} from 'vue';
+import { useAuthStore } from "~/stores/auth.js";
+import { useUIStore } from "~/stores/uiStore.js";
+import { onMounted } from "vue";
 
 const authStore = useAuthStore();
 const uiStore = useUIStore();

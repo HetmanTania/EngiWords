@@ -1,24 +1,29 @@
 <template>
   <BaseFormField :error="error ? error : {}" :label="label" :name="name">
-    <PasswordInput  :id="name" v-model="value" :name="name" :placeholder="placeholder"
-                    @input="$emit('update:modelValue', $event.target.value)"/>
+    <PasswordInput
+      :id="name"
+      v-model="value"
+      :name="name"
+      :placeholder="placeholder"
+      @input="$emit('update:modelValue', $event.target.value)"
+    />
   </BaseFormField>
 </template>
 
 <script setup>
 import PasswordInput from "~/components/Base/PasswordInput.vue";
-import {isNotEmptyString, isString} from "~/utils/validation/validators.js";
+import { isNotEmptyString, isString } from "~/utils/validation/validators.js";
 
 defineProps({
   label: {
     type: String,
     required: true,
-    validator: isNotEmptyString
+    validator: isNotEmptyString,
   },
   name: {
     type: String,
     required: true,
-    validator: isNotEmptyString
+    validator: isNotEmptyString,
   },
   error: {
     type: Object,
@@ -29,9 +34,8 @@ defineProps({
     required: true,
     validator: isString,
   },
-})
+});
 
-const value = ref('');
+const value = ref("");
 defineEmits(["update:modelValue"]);
-
 </script>

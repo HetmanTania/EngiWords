@@ -3,93 +3,107 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        --background: #FEFEFE;
-        --foreground: #F7FBFF;
-        --text: #313349;
-        --gray: #313349;
-        --white: #FEFEFE;
+  :root {
+    --background: #fefefe;
+    --foreground: #f7fbff;
+    --text: #313349;
+    --gray: #313349;
+    --white: #fefefe;
 
-        --card: #818efd0d;
-        --card-foreground: #818efd0d;
+    --card: #818efd0d;
+    --card-foreground: #818efd0d;
 
-        --primary: #808DFD;
-        --primary-foreground: #808DFD;
-        --primary_2000: #818efd33;
+    --primary: #808dfd;
+    --primary-foreground: #808dfd;
+    --primary_2000: #818efd33;
 
-        --secondary: #FEACDD;
-        --secondary-foreground: #FEACDD;
+    --secondary: #feacdd;
+    --secondary-foreground: #feacdd;
 
-        --accent: #C37AE9;
-        --accent-foreground: #C37AE9;
+    --accent: #c37ae9;
+    --accent-foreground: #c37ae9;
 
-        --muted: #E0E2E1;
-        --muted-foreground: #A2B4C6;
+    --muted: #e0e2e1;
+    --muted-foreground: #a2b4c6;
 
-        --popover: #050D1A;
-        --popover-foreground: #F7FBFF;
+    --popover: #050d1a;
+    --popover-foreground: #f7fbff;
 
-        --border: #E0E2E1;
-        --input: #E0E2E1;
-        --sidebar: #0e172a;
+    --border: #e0e2e1;
+    --input: #e0e2e1;
+    --sidebar: #0e172a;
 
-        --destructive: #9D2B2B;
-        --destructive-foreground: #F7FBFF;
+    --destructive: #9d2b2b;
+    --destructive-foreground: #f7fbff;
 
-        --error: #fb3c3c;
+    --error: #fb3c3c;
 
-        --ring: #E0E2E1;
+    --ring: #e0e2e1;
 
-        --radius: 0.5rem;
+    --radius: 0.5rem;
 
-        --apricot: FED5C0;
+    --apricot: FED5C0;
 
-        --textcontrast: #64d97b;
-        --primarycontrast: #fb3c3c;
-        --secondarycontrast: #64d97b;
-        --accentcontrast: #ffdd00;
+    --textcontrast: #64d97b;
+    --primarycontrast: #fb3c3c;
+    --secondarycontrast: #64d97b;
+    --accentcontrast: #ffdd00;
 
-        --text5: hsl(235, 20%, 24%, 5%);
-        --text10: hsl(235, 20%, 24%, 10%);
-        --text20: hsl(235, 20%, 24%, 20%);
-        --text30: hsl(235, 20%, 24%, 30%);
-        --text40: hsl(235, 20%, 24%, 40%);
-        --text50: hsl(235, 20%, 24%, 50%);
-        --text60: hsl(235, 20%, 24%, 60%);
-        --text70: hsl(235, 20%, 24%, 70%);
-        --text80: hsl(235, 20%, 24%, 80%);
-        --text90: hsl(235, 20%, 24%, 90%);
-        --text100: hsl(235, 20%, 24%, 100%);
+    --text5: hsl(235, 20%, 24%, 5%);
+    --text10: hsl(235, 20%, 24%, 10%);
+    --text20: hsl(235, 20%, 24%, 20%);
+    --text30: hsl(235, 20%, 24%, 30%);
+    --text40: hsl(235, 20%, 24%, 40%);
+    --text50: hsl(235, 20%, 24%, 50%);
+    --text60: hsl(235, 20%, 24%, 60%);
+    --text70: hsl(235, 20%, 24%, 70%);
+    --text80: hsl(235, 20%, 24%, 80%);
+    --text90: hsl(235, 20%, 24%, 90%);
+    --text100: hsl(235, 20%, 24%, 100%);
 
-        --primary5: hsl(234, 97%, 75%, 5%);
-        --primary10: hsl(234, 97%, 75%, 10%);
-        --primary20: #e5e7fe;
-        --primary30: hsl(234, 97%, 75%, 30%);
-        --primary40: hsl(234, 97%, 75%, 40%);
-        --primary50: hsl(234, 97%, 75%, 50%);
-        --primary60: hsl(234, 97%, 75%, 60%);
-        --primary70: hsl(234, 97%, 75%, 70%);
-        --primary80: hsl(234, 97%, 75%, 80%);
-        --primary90: hsl(234, 97%, 75%, 90%);
+    --primary5: hsl(234, 97%, 75%, 5%);
+    --primary10: hsl(234, 97%, 75%, 10%);
+    --primary20: #e5e7fe;
+    --primary30: hsl(234, 97%, 75%, 30%);
+    --primary40: hsl(234, 97%, 75%, 40%);
+    --primary50: hsl(234, 97%, 75%, 50%);
+    --primary60: hsl(234, 97%, 75%, 60%);
+    --primary70: hsl(234, 97%, 75%, 70%);
+    --primary80: hsl(234, 97%, 75%, 80%);
+    --primary90: hsl(234, 97%, 75%, 90%);
 
-        --secondary5: hsl(324, 98%, 84%, 5%);
-        --secondary10: hsl(324, 98%, 84%, 10%);
-        --secondary20: hsl(324, 98%, 84%, 20%);
-        --secondary30: hsl(324, 98%, 84%, 30%);
-        --secondary40: hsl(324, 98%, 84%, 40%);
-        --secondary50: hsl(324, 98%, 84%, 50%);
-        --secondary60: hsl(324, 98%, 84%, 60%);
-        --secondary70: hsl(324, 98%, 84%, 70%);
-        --secondary80: hsl(324, 98%, 84%, 80%);
-        --secondary90: hsl(324, 98%, 84%, 90%);
+    --secondary5: hsl(324, 98%, 84%, 5%);
+    --secondary10: hsl(324, 98%, 84%, 10%);
+    --secondary20: hsl(324, 98%, 84%, 20%);
+    --secondary30: hsl(324, 98%, 84%, 30%);
+    --secondary40: hsl(324, 98%, 84%, 40%);
+    --secondary50: hsl(324, 98%, 84%, 50%);
+    --secondary60: hsl(324, 98%, 84%, 60%);
+    --secondary70: hsl(324, 98%, 84%, 70%);
+    --secondary80: hsl(324, 98%, 84%, 80%);
+    --secondary90: hsl(324, 98%, 84%, 90%);
 
-        --gradient: linear-gradient(to right, #808dfd, #8e8afb, #9c86f8, #a883f4, #b47ff0, #c180ec, #cd82e8, #d784e4, #e48de1, #ee97df, #f7a1dd, #feacdd);
-    }
+    --gradient: linear-gradient(
+      to right,
+      #808dfd,
+      #8e8afb,
+      #9c86f8,
+      #a883f4,
+      #b47ff0,
+      #c180ec,
+      #cd82e8,
+      #d784e4,
+      #e48de1,
+      #ee97df,
+      #f7a1dd,
+      #feacdd
+    );
+  }
 }
 
 @layer base {
-    body {
-      font-family: Lato, sans-serif;
-        color: var(--text);
-    }
+  body {
+    font-family: Lato, sans-serif;
+    color: var(--text);
+  }
 }
