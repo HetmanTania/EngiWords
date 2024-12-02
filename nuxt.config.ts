@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  css: ['~/assets/css/tailwind.css'],
+  css: ["~/assets/css/tailwind.css"],
 
   postcss: {
     plugins: {
@@ -11,18 +11,21 @@ export default defineNuxtConfig({
   },
 
   modules: [
-      "@nuxt/image",
-      '@pinia/nuxt',
+    "@nuxt/image",
+    "@pinia/nuxt",
+    "@nuxtjs/google-fonts",
+    [
       "@nuxtjs/google-fonts",
-      ['@nuxtjs/google-fonts', {
+      {
         families: {
-            Inter: {
-                wght: [100, 400, 500, 600],
-            }
-        }
-      }]
+          Inter: {
+            wght: [100, 400, 500, 600],
+          },
+        },
+      },
+    ],
   ],
-    pinia: {
-        storesDirs: ['./stores/**'],
-    },
-})
+  pinia: {
+    storesDirs: ["./stores/**"],
+  },
+});

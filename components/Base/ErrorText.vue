@@ -1,53 +1,43 @@
 <template>
-  <span v-show="isShow" :class="['errorText', errorClass]"> {{ text }} </span>
+  <span v-show="isShow" ref="errorTextRef" :class="['errorText', errorClasses]">
+    {{ text }}
+  </span>
 </template>
 
 <script setup>
-import gsap from "~/gsap.js";
-import {isBoolean, isString} from "~/utils/validation/validators.js";
+import { isBoolean, isString } from "~/utils/validation/validators.js";
+import { startShowAnimation } from "~/animations/errorTextAnimation.js";
 
 const props = defineProps({
   text: {
     type: String,
-    default: '',
-    validator: isString
+    default: "",
+    validator: isString,
   },
   isShow: {
     type: Boolean,
     default: false,
-    validator: isBoolean
+    validator: isBoolean,
   },
   customClasses: {
     type: String,
-    default: '',
-  }
-})
+    default: "",
+  },
+});
 
-const errorClass = `text-sm text-error mt-2 relative`;
+const baseErrorClass = `text-sm text-error mt-2 relative`;
+const errorTextRef = ref(null);
 
-const btnClasses = computed(() => {
-  return  [
-    btnClasses,
-    props.customClasses
-  ].join(' ');
-})
+const errorClasses = computed(() => {
+  return [baseErrorClass, props.customClasses].join(" ");
+});
 
-watch(() => props.isShow, (newValue) => {
-  if(newValue) {
-    startShowAnimation();
-  }
-})
-
-const startShowAnimation = () => {
-  const tl = gsap.timeline();
-  tl.to('.errorText', {
-    y: 5,
-    repeat: 3,
-    yoyo: true,
-    duration: 0.5,
-    ease: 'power1.inOut',
-  })
-}
-
-
+watch(
+  () => props.isShow,
+  (newValue) => {
+    if (newValue) {
+      startShowAnimation(errorTextRef);
+    }
+  },
+);
 </script>

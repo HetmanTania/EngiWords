@@ -11,20 +11,20 @@ export default {
   theme: {
     extend: {
       fontSize: {
-        xs: '1rem',
-        xm: '1.2rem',
-        base: '1.5rem',
-        lg: '1.8rem',
-        xl: '2rem',
-        '1.5xl': '2.4rem',
-        '2xl': '2.8rem',
-        '3xl': '2.66rem',
-        '4xl': '3.19rem',
-        '5xl': '4.27rem',
-        '6xl': '5.33rem',
-        '7xl': '6.4rem',
-        '8xl': '8.52rem',
-        '9xl': '11.4rem',
+        xs: "1rem",
+        xm: "1.2rem",
+        base: "1.5rem",
+        lg: "1.8rem",
+        xl: "2rem",
+        "1.5xl": "2.4rem",
+        "2xl": "2.8rem",
+        "3xl": "2.66rem",
+        "4xl": "3.19rem",
+        "5xl": "4.27rem",
+        "6xl": "5.33rem",
+        "7xl": "6.4rem",
+        "8xl": "8.52rem",
+        "9xl": "11.4rem",
       },
       colors: {
         border: "var(--border)",
@@ -75,8 +75,8 @@ export default {
           800: "var(--secondary80)",
           900: "var(--secondary90)",
         },
-        apricot: 'var(--apricot)',
-        gradient: 'var(--gradient)',
+        apricot: "var(--apricot)",
+        gradient: "var(--gradient)",
         destructive: {
           DEFAULT: "var(--destructive)",
           foreground: "var(--destructive-foreground)",
@@ -96,25 +96,24 @@ export default {
         },
       },
       keyframes: {
-        'scalePoint': {
-          '0%': { transform: 'scale(100%)'},
-          '50%': { transform: 'scale(50%)'},
-          '100%': { transform: 'scale(100%)' }
-        }
+        scalePoint: {
+          "0%": { transform: "scale(100%)" },
+          "50%": { transform: "scale(50%)" },
+          "100%": { transform: "scale(100%)" },
+        },
       },
       boxShadow: {
-        'box': '0px 18.83px 47.08px rgba(47, 50, 125, 0.1);',
+        box: "0px 18.83px 47.08px rgba(47, 50, 125, 0.1);",
       },
       backgroundImage: {
         profile: 'url("public/svg/profile.svg")',
       },
       animation: {
-        scalePoint200ms: 'scalePoint 1s .2s linear infinite',
-        scalePoint400ms: 'scalePoint 1s .4s linear infinite',
-        scalePoint600ms: 'scalePoint 1s .6s linear infinite',
-      }
+        scalePoint200ms: "scalePoint 1s .2s linear infinite",
+        scalePoint400ms: "scalePoint 1s .4s linear infinite",
+        scalePoint600ms: "scalePoint 1s .6s linear infinite",
+      },
     },
   },
   plugins: [],
-}
-
+};

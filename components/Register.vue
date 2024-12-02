@@ -1,121 +1,128 @@
 <template>
   <div>
-    <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
-     <div class="flex flex-col items-start justify-between w-full">
-       <label :class="labelClass" for="email">Email address</label>
-       <TextInput v-model="email" type="email" id="email" name="email" placeholder="Enter email"/>
-       <ErrorText :is-show="errorsField?.email?.isError" :text="errorsField?.email?.text"/>
-     </div>
-      <div class="flex flex-col items-start justify-between w-full mt-5">
-        <label :class="labelClass" for="userName">User name</label>
-        <TextInput v-model="userName" type="text" id="userName" name="userName" placeholder="Enter user name"/>
-        <ErrorText :is-show="errorsField?.userName?.isError" :text="errorsField?.userName?.text"/>
-      </div>
-      <div class="flex flex-col items-start justify-between w-full mt-5">
-        <label :class="labelClass" for="email">Password</label>
-        <PasswordInput id="password" model-value="password" placeholder="Enter password" name="password"/>
-<!--        <input-->
-<!--              id="password" v-model.trim="password"-->
-<!--               :class="inputClass" type="password" name="password" placeholder="Enter password" >-->
-        <ErrorText :is-show="errorsField?.password?.isError" :text="errorsField?.password?.text" />
-      </div>
-      <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
-      <BtnSubmit  @submit="handlerRegister"
-                  text="Register" :is-loading="isLoading"
-                 :is-disabled="isSubmitDisabled" custom-classes="mt-4"/>
+    <form
+      action=""
+      class="from-animation flex flex-col items-end justify-between"
+      @submit.prevent
+    >
+      <TextFormField
+        v-model="email"
+        :error="{
+          isShowErrorText: fieldErrors?.email?.isError,
+          textError: fieldErrors?.email?.text,
+        }"
+        is-has-error-text="true"
+        label="Email address"
+        name="email"
+        placeholder="Enter email"
+        type="email"
+      />
+      <TextFormField
+        v-model="userName"
+        :error="{
+          isShowErrorText: fieldErrors?.userName?.isError,
+          textError: fieldErrors?.userName?.text,
+        }"
+        label="User Name"
+        name="userName"
+        placeholder="Enter user name"
+        type="text"
+      />
+      <PasswordFormField
+        v-model="password"
+        :error="{
+          isShowErrorText: fieldErrors?.password?.isError,
+          textError: fieldErrors?.password?.text,
+        }"
+        label="Password"
+        name="password"
+        placeholder="Enter password"
+      />
+      <ErrorText :is-show="serverError.isError" :text="serverError.text" />
+      <BtnSubmit
+        :is-disabled="isSubmitDisabled"
+        :is-loading="isLoading"
+        custom-classes="mt-4"
+        text="Register"
+        @submit="handleRegister"
+      />
     </form>
   </div>
 </template>
 
 <script setup>
-import {validationRulesAndErrorMessageRegisterForm, errorMessageFromServer} from "~/form/RegisterAndLoginErrors.js";
-import {useAuthStore} from "~/stores/auth.js";
+import BtnSubmit from "~/components/Base/BtnSubmit.vue";
+import ErrorText from "~/components/Base/ErrorText.vue";
+import TextFormField from "~/components/Base/TextFormField.vue";
+import PasswordFormField from "~/components/Base/PasswordFormField.vue";
+import { startFormInputsAnimation } from "~/animations/registerAnimation.js";
+
+import {
+  validationRulesAndErrorMessageRegisterForm,
+  errorMessageFromServer,
+} from "~/errorsAndConfiguration/RegisterAndLoginErrors.js";
+import { useAuthStore } from "~/stores/auth.js";
 
 import useErrorFieldHandler from "~/composable/useErrorFieldHandler.js";
 import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
 
-import PasswordInput from "~/components/Base/PasswordInput.vue";
-import BtnSubmit from "~/components/Base/BtnSubmit.vue";
-import ErrorText from "~/components/Base/ErrorText.vue";
-import TextInput from "~/components/Base/TextInput.vue";
-import gsap from "~/gsap.js";
-
 definePageMeta({
-  layout: 'auth'
-})
-
-const labelClass = `block text-xm font-medium leading-6 mb-3`;
-const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full
-        bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500
-        focus:ring-0 sm:text-sm sm:leading-6`;
-
-
+  layout: "auth",
+});
 
 const authStore = useAuthStore();
 
-const email = ref('');
-const userName = ref('');
-const password = ref('');
+const email = ref("");
+const userName = ref("");
+const password = ref("");
 
 const registerFromInputs = {
   email: email,
   userName: userName,
   password: password,
-}
-const errorFieldHandler = useErrorFieldHandler(registerFromInputs, validationRulesAndErrorMessageRegisterForm);
-const errorsField = ref(errorFieldHandler.errors)
+};
+const handleFieldError = useErrorFieldHandler(
+  registerFromInputs,
+  validationRulesAndErrorMessageRegisterForm,
+);
+const fieldErrors = ref(handleFieldError.errors);
 
-const errorServerHandler = useErrorServerHandler(errorMessageFromServer, registerFromInputs);
-const errorServer = ref(errorServerHandler.error);
+const handleServerError = useErrorServerHandler(
+  errorMessageFromServer,
+  registerFromInputs,
+);
+const serverError = ref(handleServerError.error);
 
 onMounted(() => {
   startFormInputsAnimation();
-})
+});
 
 const isSubmitDisabled = computed(() => {
-  return errorFieldHandler.isFieldsEmpty.value
-      || errorFieldHandler.isHaveError.value
-      || errorServerHandler.isHaveError.value;
-
-})
+  return (
+    handleFieldError.isFieldsEmpty.value ||
+    handleFieldError.isHaveError.value ||
+    handleServerError.isHaveError.value
+  );
+});
 
 const isLoading = ref(false);
 
-const handlerRegister = async () => {
+const handleRegister = async () => {
+  handleFieldError.checkFieldsErrors();
 
-  errorFieldHandler.checkFieldsErrors();
-
-  if (!errorFieldHandler.isHaveError.value) {
-    const registerFromInputsValue = {
-      email: email.value,
-      userName: userName.value,
-      password: password.value,
-    }
+  if (!handleFieldError.isHaveError.value) {
     try {
       isLoading.value = true;
-      await authStore.register(registerFromInputsValue);
-
+      await authStore.register({
+        email: email.value,
+        userName: userName.value,
+        password: password.value,
+      });
     } catch (e) {
-      errorServerHandler.checkServerErrors(e.type);
-    }
-    finally {
+      handleServerError.checkServerErrors(e.type);
+    } finally {
       isLoading.value = false;
     }
   }
-}
-
-const startFormInputsAnimation = () => {
-  const tl = gsap.timeline();
-  tl.to('input', {
-    scale: 1.1,
-    duration: .3,
-    delay: 2,
-    stagger: .1,
-  }).to('input',{
-    scale: 1,
-    delay: .1,
-    stagger: .1,
-  });
-}
-
+};
 </script>

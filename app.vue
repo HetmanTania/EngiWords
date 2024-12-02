@@ -1,18 +1,24 @@
 <template>
-  <NuxtLayout>
-    <LoaderPage v-if="uiStore.isPageLoaderShow"/>
-    <NuxtPage v-else/>
+  <LoaderPage v-if="uiStore.isPageLoaderShow" />
+  <NuxtLayout v-else>
+    <NuxtPage />
   </NuxtLayout>
 </template>
 
 <script setup>
-import {useUIStore} from "~/stores/uiStore.js";
+import { useAuthStore } from "~/stores/auth.js";
+import { useUIStore } from "~/stores/uiStore.js";
+import { onMounted } from "vue";
 
+const authStore = useAuthStore();
 const uiStore = useUIStore();
 
 onMounted(async () => {
-  const authStore = useAuthStore();
-  await authStore.initSession();
-})
-
+  try {
+    uiStore.showPageLoader();
+    await authStore.initSession();
+  } finally {
+    uiStore.hiddenPageLoader();
+  }
+});
 </script>

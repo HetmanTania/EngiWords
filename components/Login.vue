@@ -1,96 +1,86 @@
 <template>
   <div>
-    <form class="from-animation flex flex-col items-end justify-between" action="" @submit.prevent>
-      <div class="flex flex-col items-start justify-between w-full">
-        <label :class="labelClass" for="email">Email address</label>
-        <TextInput v-model="email" type="email" id="email" name="email" placeholder="Enter email"/>
-      </div>
-      <div class="flex flex-col items-start justify-between w-full mt-5">
-        <label :class="labelClass" for="email">Password</label>
-        <input
-              id="password" v-model="password"
-               :class="inputClass" type="password" name="password" placeholder="Enter password" >
-      </div>
-      <ErrorText :is-show="errorServer.isError" :text="errorServer.text"/>
-      <BaseBtnSubmit  @submit="handlerLogin"
-                      text="Login" :is-loading="isLoading"
-                      :is-disabled="isSubmitDisabled" custom-classes="mt-4"/>
+    <form
+      action=""
+      class="from-animation flex flex-col items-end justify-between"
+      @submit.prevent
+    >
+      <TextFormField
+        v-model="email"
+        label="Email address"
+        name="email"
+        placeholder="Enter email"
+        type="email"
+      />
+      <PasswordFormField
+        v-model="password"
+        label="Password"
+        name="password"
+        placeholder="Enter password"
+      />
+      <ErrorText :is-show="serverError.isError" :text="serverError.text" />
+      <BaseBtnSubmit
+        :is-disabled="isSubmitDisabled"
+        :is-loading="isLoading"
+        custom-classes="mt-4"
+        text="Login"
+        @submit="handleLogin"
+      />
     </form>
   </div>
 </template>
 
 <script setup>
-import {useAuthStore} from "~/stores/auth.js";
-import {useUIStore} from "~/stores/uiStore.js";
-import { errorMessageFromServer } from "~/form/RegisterAndLoginErrors.js";
-import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
-import { isNotEmptyString } from '~/utils/validation/validators.js';
-
 import ErrorText from "~/components/Base/ErrorText.vue";
-import gsap from "~/gsap.js";
-import TextInput from "~/components/Base/TextInput.vue";
+import TextFormField from "~/components/Base/TextFormField.vue";
+import PasswordFormField from "~/components/Base/PasswordFormField.vue";
+import { startFormInputsAnimation } from "~/animations/loginAimation.js";
+import { useAuthStore } from "~/stores/auth.js";
+
+import useErrorServerHandler from "~/composable/useErrorServerHandler.js";
+import { errorMessageFromServer } from "~/errorsAndConfiguration/RegisterAndLoginErrors.js";
+import { isNotEmptyString } from "~/utils/validation/validators.js";
 
 definePageMeta({
-  layout: 'auth'
-})
-
-const labelClass = `block text-xm font-medium leading-6 mb-3`;
-const inputClass = `block border-2 rounded-full border-primary px-[20px] py-[10px] w-full
-        bg-transparent placeholder:text-text-600 outline-none focus:border-primary-500 transition duration-500
-        focus:ring-0 sm:text-sm sm:leading-6`;
-
-
-const email = ref('');
-const password = ref('');
-
-const isLoading = ref(false);
-
-const loginFormInputs = {
-  email: email,
-  password: password,
-}
-
-const errorServerHandler = useErrorServerHandler(errorMessageFromServer, loginFormInputs);
-const errorServer = ref(errorServerHandler.error);
+  layout: "auth",
+});
 
 const authStore = useAuthStore();
 
-const isSubmitDisabled = computed(() => {
-  return errorServerHandler.isHaveError.value || !isNotEmptyString(email.value) || !isNotEmptyString(password.value);
-})
+const email = ref("");
+const password = ref("");
+
+const isLoading = ref(false);
+
+const handleServerError = useErrorServerHandler(errorMessageFromServer, {
+  email: email,
+  password: password,
+});
+const serverError = ref(handleServerError.error);
 
 onMounted(() => {
   startFormInputsAnimation();
-})
+});
 
-const handlerLogin = async () => {
+const isSubmitDisabled = computed(() => {
+  return (
+    handleServerError.isHaveError.value ||
+    !isNotEmptyString(email.value) ||
+    !isNotEmptyString(password.value)
+  );
+});
+
+const handleLogin = async () => {
   try {
-    const loginFormInputs = {
+    isLoading.value = true;
+    await authStore.login({
       email: email.value,
       password: password.value,
-    }
-    isLoading.value = true;
-    await authStore.login(loginFormInputs);
+    });
   } catch (e) {
-    errorServerHandler.checkServerErrors(e.type);
-  }
-  finally {
+    handleServerError.checkServerErrors(e.type);
+  } finally {
     isLoading.value = false;
   }
-}
-
-
-const startFormInputsAnimation = () => {
-  const tl = gsap.timeline();
-  tl.to('input', {
-    scale: 1.1,
-    duration: .3,
-    delay: 2,
-    stagger: .1,
-  }).to('input',{
-    scale: 1,
-    delay: .1,
-    stagger: .1,
-  });
-}
+};
 </script>

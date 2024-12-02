@@ -2,19 +2,25 @@
   <Dialog :is-show-dialog="isShow">
     <template #body>
       <div class="h-[517px]">
-        <h2 class=" font-bold mb-5 text-xm">Upload Image</h2>
-        <TextInput @change="searchByQuery" id="query" v-model="query"
-                   placeholder="Search..." name="query" type="text"
-                   custom-classes="rounded-xl"/>
+        <h2 class="font-bold mb-5 text-xm">Upload Image</h2>
+        <SearchInput v-model="query" @change="requestPhotosByQuery" />
+        <div v-if="hasError" class="w-full h-full text-ml content-center">
+          <p class="text-center">
+            {{ errorMessage }}
+          </p>
+        </div>
         <div
-          class="h-[370px] images-box w-full mt-5 overflow-y-scroll grid gap-1 grid-cols-1
-            justify-items-center justify-center sm:grid-cols-3 lg:grid-cols-3 min-[425px]:grid-cols-2" @click="selectPhoto">
+          v-else
+          class="h-[370px] images-box w-full mt-5 overflow-y-scroll grid gap-1 grid-cols-1 justify-items-center justify-center sm:grid-cols-3 lg:grid-cols-3 min-[425px]:grid-cols-2"
+          @click="selectPhoto"
+        >
           <NuxtImg
-                  v-for="photo in photos" :key="photo" fit="con" :src="photo"
-                  class="sm:w-[165px] sm:h-[100px] photo"/>
-          <div v-if="isWasFirstSearch && !photos.length" class="text-ml self-start">
-            Nothing found for your request, please enter another request
-          </div>
+            v-for="photo in unsplash.photos"
+            :key="photo"
+            :src="photo"
+            class="sm:w-[165px] sm:h-[100px] photo cursor-pointer"
+            fit="con"
+          />
         </div>
       </div>
     </template>
@@ -22,59 +28,58 @@
 </template>
 
 <script setup>
-
 import Dialog from "~/components/Base/Dialog.vue";
 import { isBoolean } from "~/utils/validation/validators.js";
-import {getRandomPhotos, searchPhotosByQuery} from "~/unsplash.js";
-import TextInput from "~/components/Base/TextInput.vue";
-
-const emits = defineEmits(['selectedImg'])
+import { useUnsplashStore } from "~/stores/unsplash.js";
+import SearchInput from "~/components/Base/SearchInput.vue";
 
 defineProps({
   isShow: {
     type: Boolean,
     required: true,
-    validator: isBoolean
-  }
-})
+    validator: isBoolean,
+  },
+});
 
-const query = ref('');
-const photos = ref([]);
+const emits = defineEmits(["selectedImg"]);
+const query = ref("");
+const errorMessage = ref("");
 
-const isWasFirstSearch = ref(false);
-
-const selectPhoto = (e) => {
-  if(e.target instanceof HTMLImageElement) {
-    emits('selectedImg', e.target.src);
-  }
-}
-
+const unsplash = useUnsplashStore();
 onMounted(async () => {
-  await randomPhotos();
-})
-
-const searchByQuery = async () => {
-  if(query.value.length){
-    photos.value = await searchPhotosByQuery(query.value);
+  try {
+    await unsplash.fetchPhotos();
+  } catch (error) {
+    console.log(error);
+    errorMessage.value = error.message;
   }
-  else {
-   await randomPhotos();
+});
+
+const selectPhoto = (event) => {
+  if (event.target instanceof HTMLImageElement) {
+    emits("selectedImg", event.target.src);
   }
-  isWasFirstSearch.value = true;
-}
+};
 
-const randomPhotos = async () => {
-  photos.value = await getRandomPhotos();
-}
+const requestPhotosByQuery = async () => {
+  try {
+    await unsplash.fetchPhotos(query.value);
+  } catch (error) {
+    console.log(error);
+    errorMessage.value = error.message;
+  }
+};
 
-
-
+const hasError = computed(() => {
+  return unsplash.hasError;
+});
 </script>
 
 <style scoped>
 .images-box::-webkit-scrollbar {
   display: none;
 }
+
 .images-box {
   -ms-overflow-style: none;
   scrollbar-width: none;
